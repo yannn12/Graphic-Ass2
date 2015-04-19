@@ -18,24 +18,29 @@ using namespace std;
 
 Scene scene;
 Camera camera;
-Vec CamPos(0, 0, 0), Up(0, 1, 0), Forward(0, 0, 1);
+int width = 512, height = 512;
+//Vec CamPos(0, 0, 0), Up(0, 1, 0), Forward(0, 0, 1);
+//
+//const int width = 320, height = 240,dpi =1;
+//
+//float PlaneDist = 30.0f;
 
-const int width = 640, height = 480,dpi =1;
-
-float PlaneDist = 5.0f;
 IntersectionEngine *intersectionFinder = new  NaiveIntersection();
 
 void createScene(){
 
-	Sphere* sphere	=new Sphere(Vec (0,0,10), 8, Vec (255,255,255));
-	Sphere* sphere2 = new Sphere(Vec(0, 10, 10), 8, Vec(0, 0, 255));
-	Plane* floor = new Plane( -1, Vec(0, 1, 0), Vec(90, 60, 30));
-	
-	
+	Vec CamPos(0, 0, -2), Up(0, 1, 0), Forward(0, 0, 1);
 
+	float PlaneDist = 10;
 
-//	scene.objects.push_back(sphere);
-	scene.objects.push_back(sphere2);
+	camera = Camera(CamPos, Up, Forward, ViewPlane(width, height, PlaneDist), 1);
+	for (int i = 0; i < 10; i++){
+	Sphere* sphere = new Sphere(Vec(-100 + i*50, i*100, 20+i*10), 15+i*2, Vec(30+i*10, 60, 90));
+	
+	scene.objects.push_back(sphere);
+
+	}
+	//scene.objects.push_back(sphere2);
 	//scene.objects.push_back(floor);
 }
 
@@ -45,7 +50,7 @@ int main(int  argc, char** argv)
 	GLubyte *pic;
 	
 
-	camera = Camera(CamPos, Up, Forward, ViewPlane(width, height, PlaneDist), dpi);
+	
 
 	createScene();
 	pic =camera.getPicture(scene, *intersectionFinder);
