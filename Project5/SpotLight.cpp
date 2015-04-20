@@ -14,15 +14,15 @@ SpotLight::~SpotLight(void)
 
 LightImpact SpotLight::lightImpact(Vector3f point){
 
-	Vector3f dir = point-Location;
+	Vector3f ImpactDir = point-Location;
 	Direction.normalize();
-	dir.normalize();
-	float angel = acos( point*dir);
+	ImpactDir.normalize();
+	float angel = acos( ImpactDir*Direction);
 	if(angel>this->Angel){
 		LightImpact result( NULL,NULL); // no hit
 		return result;
 	}
 
-	LightImpact result( &Icolor,&dir); // not mention about distance
+	LightImpact result( &Icolor,&ImpactDir); // not mention about distance
 	return result;
 }
