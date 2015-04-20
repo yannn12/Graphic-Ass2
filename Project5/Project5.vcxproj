@@ -19,7 +19,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -65,11 +64,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AmbientLight.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="Display.h" />
     <ClInclude Include="glut.h" />
     <ClInclude Include="Const.h" />
     <ClInclude Include="Intersection.h" />
+    <ClInclude Include="LightImpact.h" />
+    <ClInclude Include="LightSource.h" />
     <ClInclude Include="NaiveIntersection.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Line.h" />
@@ -78,12 +81,17 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="sphere.h" />
+    <ClInclude Include="SpotLight.h" />
     <ClInclude Include="Vector3f.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AmbientLight.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="Intersection.cpp" />
+    <ClCompile Include="LightImpact.cpp" />
+    <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NaiveIntersection.cpp" />
@@ -92,6 +100,7 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="sphere.cpp" />
+    <ClCompile Include="SpotLight.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
