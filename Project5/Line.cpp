@@ -4,7 +4,9 @@
 using namespace std;
 
 Line::Line(Vec &p, Vec &v) : p(p), v(v)
-{}
+{
+	this->v.normalize();
+}
 
 Line::Line(const Line& line) : p(line.p), v(line.v)
 {}

@@ -34,12 +34,13 @@ void createScene(){
 	float PlaneDist = 10;
 
 	camera = Camera(CamPos, Up, Forward, ViewPlane(width, height, PlaneDist), 1);
-	for (int i = 0; i < 10; i++){
-	Sphere* sphere = new Sphere(Vec(-100 + i*50, i*100, 20+i*10), 15+i*2, Vec(30+i*10, 60, 90));
-	
-	scene.objects.push_back(sphere);
-
-	}
+	//for (int i = 0; i < 10; i++){
+	//Sphere* sphere = new Sphere(Vec(-100 + i*50, i*100, 20+i*10), 15+i*2, Vec(30+i*10, 60, 90));
+		Sphere* sphere = new Sphere(Vec(-20, 20, 20), 20, Vec(40, 20, 80));
+		Plane* plane = new Plane(Vec(0, 0, 100), Vec(0, -1, -1), Vec(30, 60, 90), 0.5, 0.5);
+		scene.objects.push_back(sphere);
+		scene.objects.push_back(plane);
+	//}
 	//scene.objects.push_back(sphere2);
 	//scene.objects.push_back(floor);
 }
@@ -62,6 +63,28 @@ int main(int  argc, char** argv)
 	delete intersectionFinder;
 	delete pic;
 	return 0;
-	 
+	
+	
+	
+	Ray ray(Vec(0, 0, 0), Vec(0, 0.53, 1));
+	
+	cout << ray.toString() << endl;
+	cout << "length" <<ray.v.getLength() << endl;
+	
+	
 
+	Sphere* sphere =new Sphere(Vec(0, 0, 2), 1, Vec(0, 0, 3));
+	Scene s;
+	s.objects.push_back(sphere);
+	NaiveIntersection i;
+	
+	Intersection inters = i.FindIntersection(ray,s);
+	float t = inters.t;
+
+	cout << t <<endl;
+	cout << "(x,y)  "<< (ray.v * t).toString() << endl;
+	int a;
+	cin >> a;
+	
+	return 0;
 }
