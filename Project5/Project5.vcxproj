@@ -81,6 +81,7 @@
     <ClInclude Include="Ray.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneParser.h" />
     <ClInclude Include="sphere.h" />
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="Vector3f.h" />
@@ -100,6 +101,7 @@
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneParser.cpp" />
     <ClCompile Include="sphere.cpp" />
     <ClCompile Include="SpotLight.cpp" />
   </ItemGroup>

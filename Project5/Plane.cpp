@@ -1,9 +1,12 @@
 #include "Plane.h"
-#include <stdio.h>
-#include <iostream>
+
+#include <math.h>
 
 
 using namespace std;
+
+const float RECT_SIZE = 32;
+
 
 Plane::Plane(Vec& center, Vec& n, Vec& color, float width, float length) 
 				: center(center), n(n), width(width), length(length)
@@ -50,8 +53,11 @@ Plane::Plane(Vec& center, Vec& n, Vec& color, float width, float length)
 	p3 = center - v1 - v2;
 	p4 = center - v1 + v2;
 
+	baseL = v1;
+	baseW = v2;
 	
-
+	baseL.normalize();
+	baseW.normalize();
 	
 	this->color = color;
 }
@@ -108,13 +114,34 @@ float Plane::Intersect(Ray& ray)
 	Vec pointOnPlane = ray.p + ray.v * t;
 
 	bool cond1 = intersactTriangle(p1, p2, p3, pointOnPlane, ray.p);
-	
+
 	//cout << p1.toString() << " " << p2.toString() << " " << p3.toString() << endl;
 
-	
+
 	bool cond2 = intersactTriangle(p4, p1, p3, pointOnPlane, ray.p);
-	if (  cond1 ||cond2 )
+	if (cond1 || cond2)
 		return t;
 
 	return -1;
+
+}
+
+ Vec Plane::getColor(Vector3f& point){
+
+	 Vec L = Vector3f::projectOntoVector(point, this->baseL); 
+	 Vec W = Vector3f::projectOntoVector(point, this->baseW);
+
+	 int l = ((int)L.getLength() / RECT_SIZE);
+	 int w = ((int) W.getLength() / RECT_SIZE);
+	 l %= 2;
+	 w %= 2;
+	  
+
+	 if (w*l){
+		 return Vec( fminf((255 - color.p[0]) / 4 + color.p[0], 255),
+					 fminf((255 - color.p[1]) / 4 + color.p[1], 255),
+					 fminf((255 - color.p[2]) / 4 + color.p[2], 255));
+	 }
+	 return  color;
+
 }

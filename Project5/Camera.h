@@ -1,4 +1,5 @@
 #pragma once
+class Camera;
 #include "Vector3f.h"
 #include "Ray.h"
 #include <vector>

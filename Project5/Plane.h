@@ -13,7 +13,7 @@ public:
 	Vec  n, center;
 	float width, length	;
 	float d;
-
+	Vec baseW, baseL;  // normal vectors that define the span of the plane
 	Vec p1, p2, p3, p4;
 
 
@@ -23,5 +23,6 @@ public:
 	~Plane();
 	virtual float Intersect(Ray& ray);
 	virtual Vector3f normal(Vector3f& point);
+	virtual Vec getColor(Vector3f& point);
 };
 
