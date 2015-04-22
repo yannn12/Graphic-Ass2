@@ -19,14 +19,14 @@
     <Filter Include="Source Files\Intersection">
       <UniqueIdentifier>{36f1f81e-e5ab-4070-bbea-8241a18fba77}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Camera">
-      <UniqueIdentifier>{2627fabb-cc13-4afd-a7ac-93e1f80b450c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Ray">
       <UniqueIdentifier>{7e060879-c68c-47f6-bc9f-1a1a4cc25c75}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Light">
       <UniqueIdentifier>{8a0bd1c7-774f-4433-aa7e-4bcbcf15767e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3Dobjects\Camera">
+      <UniqueIdentifier>{2627fabb-cc13-4afd-a7ac-93e1f80b450c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +87,9 @@
     <ClInclude Include="LightImpact.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SceneParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -108,13 +111,13 @@
       <Filter>Source Files\Intersection</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Camera</Filter>
+      <Filter>Source Files\3Dobjects\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>Source Files\Camera</Filter>
+      <Filter>Source Files\3Dobjects\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Display.cpp">
-      <Filter>Source Files\Camera</Filter>
+      <Filter>Source Files\3Dobjects\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Line.cpp">
       <Filter>Source Files\3Dobjects</Filter>
@@ -136,6 +139,9 @@
     </ClCompile>
     <ClCompile Include="LightImpact.cpp">
       <Filter>Source Files\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneParser.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
