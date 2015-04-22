@@ -19,42 +19,33 @@
     <Filter Include="Source Files\Intersection">
       <UniqueIdentifier>{36f1f81e-e5ab-4070-bbea-8241a18fba77}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Ray">
-      <UniqueIdentifier>{7e060879-c68c-47f6-bc9f-1a1a4cc25c75}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Light">
       <UniqueIdentifier>{8a0bd1c7-774f-4433-aa7e-4bcbcf15767e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\3Dobjects\Camera">
+    <Filter Include="Header Files\Camera">
+      <UniqueIdentifier>{a9ba023d-9f13-4b93-83ab-7e4f8318fe64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Light">
+      <UniqueIdentifier>{8f98df56-1396-406a-b4e0-45941e8f9c89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\3DObject">
+      <UniqueIdentifier>{b6cd7b75-bb7a-4b4a-bb00-549f5af7f175}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Camera">
       <UniqueIdentifier>{2627fabb-cc13-4afd-a7ac-93e1f80b450c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Intersection">
+      <UniqueIdentifier>{02884cc5-4a88-4a89-96aa-c951afec81be}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector3f.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Ray.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Line.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Plane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sphere.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="glut.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Display.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -63,32 +54,53 @@
     <ClInclude Include="Const.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Intersection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NaiveIntersection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LightSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SpotLight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectionalLight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AmbientLight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LightImpact.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SceneParser.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Display.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="LightSource.h">
+      <Filter>Header Files\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectionalLight.h">
+      <Filter>Header Files\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="AmbientLight.h">
+      <Filter>Header Files\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="SpotLight.h">
+      <Filter>Header Files\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Header Files\3DObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Header Files\3DObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.h">
+      <Filter>Header Files\3DObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Ray.h">
+      <Filter>Header Files\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="sphere.h">
+      <Filter>Header Files\3DObject</Filter>
+    </ClInclude>
+    <ClInclude Include="NaiveIntersection.h">
+      <Filter>Header Files\Intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="Intersection.h">
+      <Filter>Header Files\Intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="LightImpact.h">
+      <Filter>Header Files\Light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -111,19 +123,16 @@
       <Filter>Source Files\Intersection</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\3Dobjects\Camera</Filter>
+      <Filter>Source Files\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>Source Files\3Dobjects\Camera</Filter>
+      <Filter>Source Files\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Display.cpp">
-      <Filter>Source Files\3Dobjects\Camera</Filter>
+      <Filter>Source Files\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Line.cpp">
       <Filter>Source Files\3Dobjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Ray.cpp">
-      <Filter>Source Files\Ray</Filter>
     </ClCompile>
     <ClCompile Include="LightSource.cpp">
       <Filter>Source Files\Light</Filter>
@@ -142,6 +151,12 @@
     </ClCompile>
     <ClCompile Include="SceneParser.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Ray.cpp">
+      <Filter>Source Files\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Source Files\3Dobjects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

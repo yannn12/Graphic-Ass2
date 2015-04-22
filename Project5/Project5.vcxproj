@@ -74,6 +74,7 @@
     <ClInclude Include="Intersection.h" />
     <ClInclude Include="LightImpact.h" />
     <ClInclude Include="LightSource.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="NaiveIntersection.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Line.h" />
@@ -96,6 +97,7 @@
     <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="NaiveIntersection.cpp" />
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Ray.cpp" />

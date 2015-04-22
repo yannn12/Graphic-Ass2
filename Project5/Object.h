@@ -5,6 +5,7 @@
 #include "Ray.h"
 #include "Material.h"
 
+
 class Object
 {
 protected:

@@ -6,7 +6,7 @@ class LightImpact
 public:
 	Vector3f* Lcolor;
 	Vector3f* Direction;
-	bool IsHit;
+	bool IsHit;	
 	bool IsAmbient;
 	LightImpact(Vector3f* Lcolor,Vector3f* direction);
 	~LightImpact(void);
