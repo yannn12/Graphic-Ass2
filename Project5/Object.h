@@ -3,7 +3,7 @@
 #include "Vector3f.h"
 #include "Line.h"
 #include "Ray.h"
- 
+#include "Material.h"
 
 class Object
 {
@@ -11,6 +11,8 @@ protected:
 	
 	
 	Vector3f color;
+	Material material;
+
 
 public:
 
@@ -22,6 +24,7 @@ public:
 	virtual Vector3f normal(Vector3f& point) = 0;
 	//return the base color vector of the object in the point 
 	virtual Vec getColor(Vector3f& point);
+	
 
 
 };
