@@ -517,7 +517,7 @@ public:
 
 	 std::string toString(){
 
-		return  "Vector3f< x: " + std::to_string(p[0]) + ",y: " + std::to_string(p[1]) + ", z: " + std::to_string(p[2]) + " >";
+		return  "<x: " + std::to_string(p[0]) + ",y: " + std::to_string(p[1]) + ", z: " + std::to_string(p[2]) + ">";
 	}
 
 	/**

@@ -1,15 +1,19 @@
 #include "Plane.h"
+#include <stdio.h>
+#include <iostream>
 
+
+using namespace std;
 
 Plane::Plane(Vec& center, Vec& n, Vec& color, float width, float length) 
-				: center(center), n(n), color(color), width(width), length(length)
+				: center(center), n(n), width(width), length(length)
 {
 	// if x is a point on the plane then (x-center).n=0  ===>  x.n + (-x.n)=0 --->  we bring it to the form p.n +d =0
 	//also we normalize the values so that the plane eqaution n.p+d=0 becomes n.p / |n|  + d /|n| =0
 	
-	d = center * n;
-	float l = this->n.normalize();
-	d = -d / l;
+	d = -(center * n);
+	//float l = this->n.normalize();
+//	d = d / l;
 
 	//tmp vectors for creating the plane edges
 	Vec v1(0,0,0);
@@ -37,7 +41,7 @@ Plane::Plane(Vec& center, Vec& n, Vec& color, float width, float length)
 	
 	v1.p[zeroIndex] += length;
 	//v2 should be orthogonal to v1 and n , with the size of the width ;
-	v2 = (v1 ^ n);  
+	v2 =  (v1 ^n);  
 	v2.normalize(); 
 	v2 =  v2* width;
 	
@@ -72,8 +76,10 @@ inline bool checkIntersaction(Vec& vertex1, Vec& vertex2, Vec& pp0, Vec& RayOrig
 
 	Vec u1 = vertex1 - RayOrigin;
 	Vec u2 = vertex2 - RayOrigin;
-	Vec n = u1 ^ u2;
+	Vec n = u2 ^ u1;
 	n.normalize();
+	float tmp =  pp0 * n;
+
 	return (pp0 *n) >= 0;
 
 
@@ -82,10 +88,13 @@ inline bool checkIntersaction(Vec& vertex1, Vec& vertex2, Vec& pp0, Vec& RayOrig
 inline bool intersactTriangle(Vec&  a, Vec& b , Vec& c, Vec& PointonPlane, Vec& RayOrigin){
 
 	Vec pp0=(PointonPlane - RayOrigin);
+	bool b1=  checkIntersaction(a, b, pp0, RayOrigin) ,
+		 b2=  checkIntersaction(b, c, pp0, RayOrigin) ,
+		 b3=  checkIntersaction(a, c, pp0, RayOrigin);
 
 	return  checkIntersaction(a, b, pp0, RayOrigin) &&
-			checkIntersaction(a, c, pp0, RayOrigin) &&
-			checkIntersaction(b, c, pp0, RayOrigin);
+			checkIntersaction(b, c, pp0, RayOrigin) &&
+			checkIntersaction(c, a, pp0, RayOrigin);
 	
 }
 
@@ -98,8 +107,14 @@ float Plane::Intersect(Ray& ray)
 	float t = -(n*ray.p + d) / dot;
 	Vec pointOnPlane = ray.p + ray.v * t;
 
-	if ( !intersactTriangle(p1, p2, p3, pointOnPlane, ray.p) && !intersactTriangle(p1, p3, p4, pointOnPlane, ray.p))
-		return -1;
+	bool cond1 = intersactTriangle(p1, p2, p3, pointOnPlane, ray.p);
+	
+	//cout << p1.toString() << " " << p2.toString() << " " << p3.toString() << endl;
 
-	return t;
+	
+	bool cond2 = intersactTriangle(p4, p1, p3, pointOnPlane, ray.p);
+	if (  cond1 ||cond2 )
+		return t;
+
+	return -1;
 }

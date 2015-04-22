@@ -2,5 +2,5 @@
 
 Vec Object::getColor(Vector3f& point){
 
-	return color;
+	return this->color;
 }

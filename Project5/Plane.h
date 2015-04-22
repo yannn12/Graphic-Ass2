@@ -16,7 +16,6 @@ public:
 
 	Vec p1, p2, p3, p4;
 
-	Vec color;
 
 	//recives a point and a normal assumes one normal coordiante is 0 and 1 edge of the plane is parallel to  one of the axis
 	Plane(Vec& Center, Vec& n ,Vec& color , float width, float length);   
