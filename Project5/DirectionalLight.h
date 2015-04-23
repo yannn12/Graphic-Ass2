@@ -1,5 +1,7 @@
 #pragma once
 #include "spotlight.h"
+ 
+
 class DirectionalLight :
 	public LightSource
 {
@@ -9,6 +11,7 @@ public:
 
 	DirectionalLight(Vector3f& Direction,Vector3f& Icolor);
 	virtual ~DirectionalLight(void);
-	virtual LightImpact lightImpact(Vector3f point);
+	virtual LightImpact lightImpact(Vector3f& point);
+
 };
 

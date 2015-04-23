@@ -9,13 +9,14 @@ LightImpact::LightImpact(Vector3f* Lcolor,Vector3f* Direction)
 	this->Direction = NULL;
 	this->IsHit = false;
 	this->IsAmbient = false;
+
 	if(Lcolor!=NULL){
 		_Lcolor = *Lcolor;
 		this->Lcolor = &_Lcolor;
 		this->IsHit = true;
 	}
 	if(Direction!=NULL){
-		_Direction = *Lcolor;
+		_Direction = *Direction;
 		this->Direction = &_Direction;
 		this->IsAmbient = true;
 	}

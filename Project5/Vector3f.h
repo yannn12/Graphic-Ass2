@@ -241,6 +241,16 @@ public:
 		return dotProduct(*this, P);
 	};
 
+
+	/////////////////////////////////////////////////////////////////
+	/*
+		for vectors (a,b,c) and (e,f,g) this operator returns (a*b,b*f,c*g)
+	*/
+	inline Vector3f operator% (const Vector3f p) const
+	{
+
+		return Vector3f(x*p.x, y*p.y, z*p.y);
+	};
 	/////////////////////////////////////////////////////////////////
 
 	inline Vector3f operator* (float s) const

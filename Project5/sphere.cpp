@@ -1,5 +1,5 @@
 #include "sphere.h"
-
+#include "Object.h"
 
 Sphere::Sphere(Vec center, float radius, Vec color) : center(center), radius(radius)
 {

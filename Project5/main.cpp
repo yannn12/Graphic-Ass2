@@ -12,11 +12,17 @@
 #include "sphere.h"
 #include "NaiveIntersection.h"
 #include "Intersection.h"
+#include "DirectionalLight.h"
 
 using namespace std;
 
 
-Scene scene;
+IntersectionEngine *intersectionFinder;
+AmbientLight* ambient;
+DirectionalLight* directional;
+DirectionalLight* directional2;
+
+Scene* scene;
 Camera camera;
 int width = 512, height = 512;
 //Vec CamPos(0, 0, 0), Up(0, 1, 0), Forward(0, 0, 1);
@@ -25,28 +31,40 @@ int width = 512, height = 512;
 //
 //float PlaneDist = 30.0f;
 
-IntersectionEngine *intersectionFinder = new  NaiveIntersection();
 
 void createScene(){
 
 	Vec CamPos(0, 0, -2), Up(0, 1, 0), Forward(0, 0, 1);
 
 	float PlaneDist =100; 
-
+	ambient = new AmbientLight(Vec(0.05, 0.05, 0.05));
+	directional = new DirectionalLight(Vec(1, -1, 0), Vec(0.5, 0.5, 0.5));
+	directional2 = new DirectionalLight(Vec(-1, -1, 0), Vec(0.1, 0.4, 0.2));
+	intersectionFinder = new  NaiveIntersection();
+	scene =new Scene(intersectionFinder, ambient);
 	camera = Camera(CamPos, Up, Forward, ViewPlane(width, height, PlaneDist), 1);
+	
+	
 	//for (int i = 0; i < 10; i++){
 	//Sphere* sphere = new Sphere(Vec(-100 + i*50, i*100, 20+i*10), 15+i*2, Vec(30+i*10, 60, 90));
 		Sphere* sphere = new Sphere(Vec(20, 0, 120), 20, Vec(40, 20, 80));
 
-		Plane* plane1 = new Plane(Vec(20, 0, 150),	Vec(-1, 0, -1), Vec(60, 60,  60), 100, 100);
+	/*	Plane* plane1 = new Plane(Vec(20, 0, 150),	Vec(-1, 0, -1), Vec(60, 60,  60), 100, 100);
 		Plane* plane2 = new Plane(Vec(-20, 0, 150), Vec(1, 0, -1),	Vec(120, 120, 120), 100, 100);
-		Plane* plane3 = new Plane(Vec(0, 20, 200),	Vec(0, -1, 0),	Vec(180, 180, 180), 100, 100);
+		Plane* plane3 = new Plane(Vec(0, 20, 200),	Vec(0, -1, 0),	Vec(180, 180, 180), 100, 100);*/
 		Plane* plane4 = new Plane(Vec(0, -20, 150), Vec(0, 1, 0),	Vec(60, 30, 240), 100, 100);
-		scene.objects.push_back(sphere);
-	//	scene.objects.push_back(plane1);
+
+
+		sphere->material = Material(Vec(0.7, 0.3, 0.6), Vec(0.7, 0.3, 0.6), Vec(0, 0, 0));
+		plane4->material = Material(Vec(80 / 255.f, 153.0f / 255.f, 77.0f / 255.0f), Vec(80 / 255.f, 153.0f / 255.f, 77.0f / 255.0f), Vec(0, 0, 0));
+		scene->objects.push_back(sphere);
+	//	scene.objects.push_back(plane1);x
 	//	scene.objects.push_back(plane2);
 	//	scene.objects.push_back(plane3);
-		scene.objects.push_back(plane4);
+		scene->objects.push_back(plane4);
+
+		scene->lightSources.push_back(directional);
+		scene->lightSources.push_back(directional2);
 	//}
 	//scene.objects.push_back(sphere2);
 	//scene.objects.push_back(floor);
@@ -59,9 +77,9 @@ int main(int  argc, char** argv)
 	
 
 	
-
+	
 	createScene();
-	pic =camera.getPicture(scene, *intersectionFinder);
+	pic =camera.getPicture(*scene, *intersectionFinder);
 
 	Display display(width, height, "RayTracing");
 	display.setPicture(pic);
@@ -69,6 +87,7 @@ int main(int  argc, char** argv)
  
 	delete intersectionFinder;
 	delete pic;
+	delete scene;
 	return 0;
 	
 	Vec x(1, 0, 0);

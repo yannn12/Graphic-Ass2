@@ -4,7 +4,7 @@
 #include "Const.h" 
 
 
-inline void castRay(Vec& cameraPos, Vec& pointOnPlane, int index, GLubyte* pic, IntersectionEngine& intersectionFinder, Scene& scene);
+inline void castRay(Vec& cameraPos, Vec& pointOnPlane, int index, GLubyte* pic, Scene& scene);
 inline void putColor(GLubyte *pic, int index, Vec color);
 
 Camera::Camera(Vec& position, Vector3f& up, Vector3f& forward, ViewPlane& viewPlane, int dpi) :
@@ -32,7 +32,7 @@ GLubyte* Camera::getPicture(Scene& scene, IntersectionEngine& intersectionFinder
 	GLubyte* pic = (GLubyte*)malloc(sizeof(GLubyte)* 3 * viewPlane.width * viewPlane.height);
 	Vec pointOnViewPlane, horizontal, vertical ,color;
 	int index;
-	int pX, pY;
+ 
 	int yCenter = (viewPlane.height / 2 );
 	int xCenter = (viewPlane.width / 2 );
 	// vector from the camera to the center of the viewing plane 
@@ -53,16 +53,16 @@ GLubyte* Camera::getPicture(Scene& scene, IntersectionEngine& intersectionFinder
 			Vec Qdr = pCenter + horizontal - vertical;
 			
 			index = y * viewPlane.width + x;
-			castRay(position, Qdl , index, pic, intersectionFinder, scene);
+			castRay(position, Qdl, index, pic, scene);
 			
 			index = y * viewPlane.width + (viewPlane.width -1 - x);
-			castRay(position, Qdr, index, pic, intersectionFinder, scene);
+			castRay(position, Qdr, index, pic, scene );
 			
 			index = (viewPlane.height -1- y) * viewPlane.width + x;
-			castRay(position, Qul , index, pic, intersectionFinder, scene);
+			castRay(position, Qul, index, pic, scene );
 			
 			index = (viewPlane.height -1 - y) * viewPlane.width+  (viewPlane.width -1 - x);
-			castRay(position, Qur, index, pic, intersectionFinder, scene);
+			castRay(position, Qur, index, pic, scene);
 			
 		}
 		
@@ -103,21 +103,71 @@ inline void putColor(GLubyte *pic, int index, Vec color){
 }
 
 
-inline void castRay(Vec& cameraPos, Vec& pointOnPlane, int index, GLubyte* pic, IntersectionEngine& intersectionFinder,Scene& scene){
+inline bool ocluded(Scene& scene, Vec& pointOfIntersection, Vec& DirectionOfLight){
+
+	Ray ray(pointOfIntersection, DirectionOfLight);
+
+	Intersection intersection = scene.intersectionFinder->FindIntersection(ray, scene);
+
+	return (intersection.object !=NULL);
+
+}
+
+inline Vec calcColor(Scene& scene, Ray& ray, Intersection& intersection, int index)
+{
+	
+	Vec pointOfIntersection = ray.getPoint(intersection.t);
+	Object* obj = intersection.object;
+	Vec diffuse = Vec::zero();
+	
+	Vec kd = obj->Kd(pointOfIntersection);
+	Vec norm = obj->normal(pointOfIntersection);
+
+	for (std::vector<LightSource *>::iterator it = scene.lightSources.begin(); it != scene.lightSources.end(); ++it){
+
+
+		LightImpact impact = (*it)->lightImpact(pointOfIntersection);
+		
+		if (!impact.IsHit  )
+			continue;
+		if (ocluded(scene, pointOfIntersection, (*impact.Direction) ))
+			continue;
+		float dir = (*impact.Direction)*norm;
+		if (dir > 0)
+			diffuse += dir * (*impact.Lcolor);
+		
+	}
+	Vec c = kd % diffuse;
+	 
+	//			ambient														
+	return ( (*obj).Ka(pointOfIntersection)% scene.ambientLight->Icolor 
+	//			diffuse 	
+			+ kd % diffuse ) % Vec( 255,255,255);
+
+}
+
+
+inline void castRay(Vec& cameraPos, Vec& pointOnPlane, int index, GLubyte* pic, Scene& scene){
 
 	// vector  from the camera to the postion 
 	Vec vector = (pointOnPlane - cameraPos);
 	vector.normalize();
 	Ray ray(cameraPos, vector);
-	Intersection intersection = intersectionFinder.FindIntersection(ray, scene);
+	 
 	Vec color;
-
+	Intersection intersection= (*scene.intersectionFinder).FindIntersection(ray, scene);
 	if (intersection.object == NULL)
-		color = BACKGROUND_COLOR;
-	else{
-		color = intersection.object->getColor(ray.getPoint(intersection.t));
-		//	printf(" x: %d  , y: %d\n", xCenter + pX + x * v, yCenter + pY + y * h);
+	{
+		color= BACKGROUND_COLOR;
 	}
+	else {
+
+		color = calcColor(scene, ray,intersection , index);
+	}
+	 
 	putColor(pic, index, color);
 
 }
+
+
+

@@ -1,6 +1,7 @@
 #include "Plane.h"
-
+#include "Const.h"
 #include <math.h>
+#include "Object.h"
 
 
 using namespace std;
@@ -16,7 +17,7 @@ Plane::Plane(Vec& center, Vec& n, Vec& color, float width, float length)
 	
 	d = -(center * n);
 	//float l = this->n.normalize();
-//	d = d / l;
+	//	d = d / l;
 
 	//tmp vectors for creating the plane edges
 	Vec v1(0,0,0);
@@ -126,10 +127,13 @@ float Plane::Intersect(Ray& ray)
 
 }
 
- Vec Plane::getColor(Vector3f& point){
+inline Vec Plane::Ka(Vec& pointOfImpact){
 
-	 Vec L = Vector3f::projectOntoVector(point, this->baseL); 
-	 Vec W = Vector3f::projectOntoVector(point, this->baseW);
+	
+	 Vec c = Object::Ka(pointOfImpact);
+	 
+	 Vec L = Vector3f::projectOntoVector(pointOfImpact, this->baseL);
+	 Vec W = Vector3f::projectOntoVector(pointOfImpact, this->baseW);
 
 	 int l = ((int)L.getLength() / RECT_SIZE);
 	 int w = ((int) W.getLength() / RECT_SIZE);
@@ -138,10 +142,35 @@ float Plane::Intersect(Ray& ray)
 	  
 
 	 if (w*l){
-		 return Vec( fminf((255 - color.p[0]) / 4 + color.p[0], 255),
-					 fminf((255 - color.p[1]) / 4 + color.p[1], 255),
-					 fminf((255 - color.p[2]) / 4 + color.p[2], 255));
+		 return Vec( fminf(1.25 * c.p[0], 1),
+					 fminf(1.5 * c.p[1], 1),
+					 fminf(1.25 * c.p[2], 1));
+		 
 	 }
-	 return  color;
+	 return  c;
+
+}
+
+
+inline Vec Plane::Kd(Vec& pointOfImpact){
+
+
+	Vec c = Object::Kd(pointOfImpact);
+
+	Vec L = Vector3f::projectOntoVector(pointOfImpact, this->baseL);
+	Vec W = Vector3f::projectOntoVector(pointOfImpact, this->baseW);
+
+	int l = ((int)L.getLength() / RECT_SIZE);
+	int w = ((int)W.getLength() / RECT_SIZE);
+	l %= 2;
+	w %= 2;
+
+
+	if (w*l){
+		return Vec(fminf(1.25 * c.p[0], 1),
+			fminf(1.5 * c.p[1], 1),
+			fminf(1.25 * c.p[2], 1));
+	}
+	return  c;
 
 }

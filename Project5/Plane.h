@@ -3,6 +3,7 @@
 #include "Ray.h"
 #include "Object.h"
 
+
 typedef Vector3f Vec;
 
 class Plane : public Object
@@ -23,6 +24,7 @@ public:
 	~Plane();
 	virtual float Intersect(Ray& ray);
 	virtual Vector3f normal(Vector3f& point);
-	virtual Vec getColor(Vector3f& point);
+	inline virtual Vec Ka(Vec& pointOfImpact);
+	inline virtual Vec Kd(Vec& pointOfImpact);
 };
 

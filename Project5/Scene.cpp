@@ -2,9 +2,20 @@
 #include "Object.h"
 #include <vector>
 
+
+Scene::Scene(IntersectionEngine* intersection, AmbientLight* ambientLight) :intersectionFinder(intersection), ambientLight(ambientLight)
+{
+	objects = std::vector <Object*>();
+	lightSources = std::vector<LightSource *>();
+}
+
+
 Scene::Scene()
 {
 	objects = std::vector <Object*>();
+	lightSources = std::vector<LightSource *>();
+	ambientLight = 0;
+	intersectionFinder = 0;
 }
 
 
@@ -14,4 +25,13 @@ Scene::~Scene()
 
 		delete *it;
 	}
+
+	for (std::vector<LightSource *>::iterator it = lightSources.begin(); it != lightSources.end(); ++it){
+
+		delete *it;
+	}
+
+	delete ambientLight;
+	delete intersectionFinder;
+
 }

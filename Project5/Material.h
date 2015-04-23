@@ -1,4 +1,4 @@
-#pragma once7
+#pragma once
 
 #include "Vector3f.h"
 

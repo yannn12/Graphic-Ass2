@@ -1,12 +1,13 @@
 #pragma once
 
-class Scene;
+ 
  
 #include "Object.h"
 #include <vector>
 #include "Camera.h"
-#include "LightSource.h"
 
+#include "AmbientLight.h"
+#include "Intersection.h"
 
 class Scene
 {
@@ -15,12 +16,20 @@ class Scene
 
 public:
 	
+
+	IntersectionEngine * intersectionFinder;
+
+	Scene(IntersectionEngine* intersectionFinderFinder, AmbientLight* ambientLight);
 	Scene();
 	~Scene();
 	
+	
+
 	std::vector <Object*> objects;
-	std::vector <LightSource*> LightSources;
-	Camera *camera;
+	std::vector <LightSource*> lightSources;
+	
+	AmbientLight* ambientLight;
+	
 
 
 };

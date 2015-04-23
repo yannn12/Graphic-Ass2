@@ -11,8 +11,8 @@ AmbientLight::~AmbientLight(void)
 }
 
 
-LightImpact AmbientLight::lightImpact(Vector3f point){
-	
+LightImpact AmbientLight::lightImpact(Vector3f& point)
+{
 	LightImpact result( &Icolor,NULL);
 	return result;
 }

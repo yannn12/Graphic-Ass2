@@ -12,7 +12,7 @@ SpotLight::~SpotLight(void)
 }
 
 
-LightImpact SpotLight::lightImpact(Vector3f point){
+LightImpact SpotLight::lightImpact(Vector3f& point){
 
 	Vector3f ImpactDir = point-Location;
 	Direction.normalize();
@@ -23,6 +23,6 @@ LightImpact SpotLight::lightImpact(Vector3f point){
 		return result;
 	}
 
-	LightImpact result( &Icolor,&ImpactDir); // not mention about distance
+	LightImpact result(&Icolor, &ImpactDir); // not mention about distance
 	return result;
 }

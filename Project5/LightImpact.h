@@ -11,6 +11,7 @@ public:
 	LightImpact(Vector3f* Lcolor,Vector3f* direction);
 	~LightImpact(void);
 
+
 private:
 	Vector3f _Lcolor;
 	Vector3f _Direction;
