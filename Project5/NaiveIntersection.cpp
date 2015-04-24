@@ -4,6 +4,7 @@
 #include "Intersection.h"
 #include <float.h>
 #include <vector>
+#include "Const.h"
 
 
  
@@ -26,9 +27,11 @@ Intersection NaiveIntersection::FindIntersection(Ray& ray, Scene& scene)
 	for (std::vector<Object*>::iterator obj = scene.objects.begin(); obj != scene.objects.end(); ++obj)
 	{
 		float t = (*obj)->Intersect(ray);
-			if (t < min_t && t > 0){
-			min_primitive =(Object*) (*obj);
+		if (t < min_t && t > zeroTolerance)
+		{
+			min_primitive = (Object*)(*obj);
 			min_t = t;
+		
 		}
 	}
 

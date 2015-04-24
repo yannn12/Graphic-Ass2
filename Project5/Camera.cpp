@@ -120,7 +120,7 @@ ViewPlane::ViewPlane(ViewPlane& p) : width(p.width), height(p.height), dist(p.di
 
 {}
 
-
+/**********************  util ********************/
 inline void putColor(GLubyte *pic, int index, Vec color){
 
 		
@@ -137,9 +137,11 @@ inline bool ocluded(Scene& scene, Vec& pointOfIntersection, Vec& DirectionOfLigh
 
 	Intersection intersection = scene.intersectionFinder->FindIntersection(ray, scene);
 
-	return (intersection.object !=NULL);
+	return (!intersection.object == NULL  );
 
 }
+
+Vec normPrec(0,0,0);
 
 inline Vec calcColor(Scene& scene, Ray& ray, Intersection& intersection, Vec& cameraPos , int index)
 {
@@ -167,30 +169,34 @@ inline Vec calcColor(Scene& scene, Ray& ray, Intersection& intersection, Vec& ca
 			continue;
 
 		float dir = (impact.Direction)*norm;
+		
 		if (dir > 0)
-			diffuse += dir * (impact.Lcolor);
-
+			diffuse.addWithLim(dir * (impact.Lcolor), 1);
+			
+		
 		Vec R = ((impact.Direction) - 2 * ((impact.Direction) * norm) * norm);
 		Vec V = cameraPos - pointOfIntersection;
 		V.normalize();
-		float spec = pow ( (R * V) ,1);
+		float spec = pow ( (R * V) ,specExp);
 
 		if (spec > 0)
-			specular += spec * (impact.Lcolor);
+			specular.addWithLim (spec * (impact.Lcolor),1);
+
+	
  
 	}
-
+	
 
 	//			ambient														
-	Vec color =((*obj).Ka(pointOfIntersection) % scene.ambientLight->Icolor
-		//			diffuse 	
-		+ kd % diffuse
+	Vec color =(//(*obj).Ka(pointOfIntersection) % scene.ambientLight->Icolor
+				//	diffuse 	
+		 kd % diffuse 
 		//			Specular
-		+ks % specular
+	//	+ks % specular
 		//				to RGB
 		) % Vec(255, 255, 255);
 	 														
-	return Vec(fminf(color.x, 255), fminf(color.y, 255), fminf(color.z, 255));
+	return color;
 
 }
 

@@ -7,14 +7,12 @@ public:
 	Vector3f Lcolor;
 	Vector3f Direction;
 	bool IsHit;	
-	bool IsAmbient;
+	 
 	LightImpact(Vector3f& Lcolor,Vector3f& direction);
 	LightImpact(void);
 	~LightImpact(void);
 
 
-private:
-	/*Vector3f _Lcolor;
-	Vector3f _Direction;*/
+ 
 };
 
