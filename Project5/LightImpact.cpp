@@ -12,7 +12,7 @@ LightImpact::LightImpact(Vector3f& Lcolor,Vector3f& Direction)
 	 
 		//_Direction = Direction;
 		this->Direction = Direction;
-	 
+		this->Direction.normalize();
 	
 }
 

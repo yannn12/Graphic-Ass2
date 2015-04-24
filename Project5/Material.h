@@ -15,12 +15,13 @@ private:
 public:
 
 	
-	static const int Ka = 0, Kd = 1, Ks = 2;
-	Vector3f Coefficients[3];
-	float specularExponent;
+	static const int Ka = 0, Kd = 1, Ks = 2, Kt = 3;
+	Vector3f Coefficients[4];
+	int specularExponent;
 
 
-	Material(Vec& Ka, Vec& Kd, Vec& Ks,float specularExponent);
+	Material(Vec& Ka, Vec& Kd, Vec& Ks,int specularExponent);
+	Material(Vec& Ka, Vec& Kd, Vec& Ks,Vec& Kt, int specularExponent);
 	Material();
 	~Material();
 };

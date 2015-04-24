@@ -403,15 +403,15 @@ public:
 	};
 
 	/*
-		add this vector and another ,but set a maximu value to the coordinate 
+		 set a maximum value to the coordinate 
 	*/
-	inline void addWithLim(Vector3f& P2, float maxVlaue)
+	inline void LimValue(float maxVlaue)
 	{
 		
 
-		x = fminf(x + P2.x, maxVlaue);
-		y = fminf(y + P2.y, maxVlaue);
-		z = fminf(z + P2.z, maxVlaue);
+		x = fminf(x , maxVlaue);
+		y = fminf(y , maxVlaue);
+		z = fminf(z , maxVlaue);
 		
 	};
 
@@ -535,7 +535,7 @@ public:
 
 
 	inline int isZero(){
-		return  p[0] <zeroTolerance && p[1] <zeroTolerance && p[2] <zeroTolerance;
+		return  p[0] == 0 && p[1] == 0 && p[2] == 0;
 	}
 
 	 std::string toString(){

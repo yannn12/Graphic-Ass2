@@ -21,8 +21,15 @@ Vec Object::Ks(Vec& pointOfImpact){
 	return material.Coefficients[Material::Ks];
 }
 
+//return the retracing coefficient vector of the object in the point 
+Vec Object::Kt(Vec& pointOfImpact){
+
+	return material.Coefficients[Material::Kt];
+}
+
+
 // return the specular Exponent
-float Object::getSpecularExponent(){
+int Object::getSpecularExponent(){
 	
 	return material.specularExponent;
 }

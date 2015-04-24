@@ -27,5 +27,6 @@ public:
 	inline virtual Vec Ka(Vec& pointOfImpact);
 	inline virtual Vec Kd(Vec& pointOfImpact);
 	inline virtual Vec Ks(Vec& pointOfImpact);
+	inline virtual Vec Kt(Vec& pointOfImpact);
 };
 

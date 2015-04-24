@@ -2,17 +2,11 @@
 #include "NaiveIntersection.h"
 #include "Intersection.h"
 #include "Const.h" 
+#include "Vector3f.h"
 
-
-inline void castRay(Vec& cameraPos, Vec& pointOnPlane, int index, GLubyte* pic, Scene& scene);
+inline void castRay(Vec& cameraPos, Vec& pointOnPlane, int index, GLubyte* pic, Scene& scene, int recursive);
 inline void putColor(GLubyte *pic, int index, Vec color);
-inline float fminf(float x,float y){
-	if(x<y)
-		return x;
-	else 
-		return y;
-}
-
+inline Vec calcRecursiveColor(Scene& scene, Ray& ray, Vec& cameraPos, int recursive);
 
 Camera::Camera(Vec& position, Vector3f& up, Vector3f& forward, ViewPlane& viewPlane, float pixelwidth) :
 up(up), forward(forward), right( forward ^up), position(position), viewPlane(viewPlane), pixelwidth(pixelwidth)
@@ -69,7 +63,7 @@ GLubyte* Camera::getPicture(Scene& scene, IntersectionEngine& intersectionFinder
 			index = y * viewPlane.width + x;
 			Vec p = pCenter + (x - xCenter)*Rx*right + (y - yCenter)*Ry*up;
 		//	printf("%s\n", p.toString().c_str());
-			castRay(position, p, index, pic, scene);
+			castRay(position, p, index, pic, scene,2);
 
 
 		}
@@ -138,19 +132,19 @@ inline void putColor(GLubyte *pic, int index, Vec color){
 }
 
 
-inline bool ocluded(Scene& scene, Vec& pointOfIntersection, Vec& DirectionOfLight){
+inline bool ocluded(Scene& scene, Vec& pointOfIntersection, Vec& DirectionOfLight, Object* currentObject){
 
 	Ray ray(pointOfIntersection, DirectionOfLight);
 
 	Intersection intersection = scene.intersectionFinder->FindIntersection(ray, scene);
 
-	return (!intersection.object == NULL  );
+	return (!intersection.object == NULL &&  intersection.object != currentObject);
 
 }
 
 Vec normPrec(0,0,0);
 
-inline Vec calcColor(Scene& scene, Ray& ray, Intersection& intersection, Vec& cameraPos , int index)
+inline Vec calcColor(Scene& scene, Ray& ray, Intersection& intersection, Vec& cameraPos , int index, int recursive)
 {
 	
 	Vec pointOfIntersection = ray.getPoint(intersection.t);
@@ -161,6 +155,7 @@ inline Vec calcColor(Scene& scene, Ray& ray, Intersection& intersection, Vec& ca
 	
 	Vec kd = obj->Kd(pointOfIntersection);
 	Vec ks = obj->Ks(pointOfIntersection);
+	Vec kt = obj->Kt(pointOfIntersection);
 	Vec norm = obj->normal(pointOfIntersection);
 	int specExp = obj->getSpecularExponent();
 
@@ -172,43 +167,116 @@ inline Vec calcColor(Scene& scene, Ray& ray, Intersection& intersection, Vec& ca
 		
 		if (!impact.IsHit )
 			continue;
-		if (ocluded(scene, pointOfIntersection, (impact.Direction) ))
+		if (ocluded(scene, pointOfIntersection, (impact.Direction) ,obj))
 			continue;
 
 		float dir = (impact.Direction)*norm;
 		
-		if (dir > 0)
-			diffuse.addWithLim(dir * (impact.Lcolor), 1);
+		if (dir > 0 )
+			diffuse+=(dir * (impact.Lcolor));
 			
 		
 		Vec R = ((impact.Direction) - 2 * ((impact.Direction) * norm) * norm);
 		Vec V = cameraPos - pointOfIntersection;
 		V.normalize();
-		float spec = pow ( (R * V) ,specExp);
 
-		if (spec > 0)
-			specular.addWithLim (spec * (impact.Lcolor),1);
-
+		float spec =(R * V);
+		spec = pow(spec, specExp);
+		if (spec > 0 && dir>0){
+			
+			specular+=(spec * (impact.Lcolor));
+		}
 	
  
 	}
-	
-
+	Vec rec;
+	if (!kt.isZero() )
+		rec = calcRecursiveColor(scene, Ray(pointOfIntersection + norm * 2 * zeroTolerance, norm), cameraPos, recursive - 1);
 	//			ambient														
-	Vec color =(//(*obj).Ka(pointOfIntersection) % scene.ambientLight->Icolor
-				//	diffuse 	
-		 kd % diffuse 
+	Vec color = ((*obj).Ka(pointOfIntersection) % scene.ambientLight->Icolor
+		//	diffuse 	
+		+ kd % diffuse
 		//			Specular
-	//	+ks % specular
+		+ ks % specular
+
+		+ kt % rec
 		//				to RGB
 		) % Vec(255, 255, 255);
-	 														
+	color.LimValue(255);
 	return color;
 
 }
 
+inline Vec calcRecursiveColor(Scene& scene, Ray& ray, Vec& cameraPos, int recursive)
+{
+	if (recursive == 0){
+		return BACKGROUND_COLOR;
+	}
+	Intersection intersection = scene.intersectionFinder->FindIntersection(ray, scene);
+	if (intersection.object == 0){
+		return BACKGROUND_COLOR;
+	}
+	Vec pointOfIntersection = ray.getPoint(intersection.t);
+	Object* obj = intersection.object;
 
-inline void castRay(Vec& cameraPos, Vec& pointOnPlane, int index, GLubyte* pic, Scene& scene){
+	Vec diffuse = Vec::zero();
+	Vec specular = Vec::zero();
+
+	Vec kd = obj->Kd(pointOfIntersection);
+	Vec ks = obj->Ks(pointOfIntersection);
+	Vec kt = obj->Kt(pointOfIntersection);
+	Vec norm = obj->normal(pointOfIntersection);
+	int specExp = obj->getSpecularExponent();
+
+
+	for (std::vector<LightSource *>::iterator it = scene.lightSources.begin(); it != scene.lightSources.end(); ++it){
+
+
+		LightImpact impact = (LightImpact)(*it)->lightImpact(pointOfIntersection);
+
+		if (!impact.IsHit)
+			continue;
+		if (ocluded(scene, pointOfIntersection, (impact.Direction), obj))
+			continue;
+
+		float dir = (impact.Direction)*norm;
+
+		if (dir > 0)
+			diffuse += (dir * (impact.Lcolor));
+
+
+		Vec R = ((impact.Direction) - 2 * ((impact.Direction) * norm) * norm);
+		Vec V = cameraPos - pointOfIntersection;
+		V.normalize();
+
+		float spec = (R * V);
+		spec = pow(spec, specExp);
+		if (spec > 0 && dir>0){
+
+			specular += (spec * (impact.Lcolor));
+		}
+
+
+	}
+	Vec rec = Vec::zero();
+	if (!kt.isZero())
+		rec = calcRecursiveColor(scene, Ray(pointOfIntersection + norm * 2 * zeroTolerance, norm), cameraPos, recursive - 1);
+	//			ambient														
+	Vec color = ((*obj).Ka(pointOfIntersection) % scene.ambientLight->Icolor
+		//	diffuse 	
+		+ kd % diffuse
+		//			Specular
+		+ ks % specular
+
+		+ kt % rec
+		//				to RGB
+		);
+	color.LimValue(1);
+	return color;
+
+}
+
+inline void castRay(Vec& cameraPos, Vec& pointOnPlane, int index, GLubyte* pic, Scene& scene,int recursive){
 
 	// vector  from the camera to the postion 
 	Vec vector = (pointOnPlane - cameraPos);
@@ -223,7 +291,7 @@ inline void castRay(Vec& cameraPos, Vec& pointOnPlane, int index, GLubyte* pic, 
 	}
 	else {
 
-		color = calcColor(scene, ray,intersection , cameraPos, index);
+		color = calcColor(scene, ray, intersection, cameraPos, index, recursive);
 	}
 	 
 	putColor(pic, index, color);

@@ -32,8 +32,13 @@ public:
 
 	//return the specular coefficient vector of the object in the point 
 	 virtual  Vec Ks(Vec& pointOfImpact);
+
+	 //return the rertracing coefficient vector of the object in the point 
+	 virtual  Vec Kt(Vec& pointOfImpact);
+
+
 	 // return the specular Exponent
-	 virtual float getSpecularExponent();
+	 virtual int getSpecularExponent();
 
 	  
 };

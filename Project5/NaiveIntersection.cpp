@@ -27,12 +27,14 @@ Intersection NaiveIntersection::FindIntersection(Ray& ray, Scene& scene)
 	for (std::vector<Object*>::iterator obj = scene.objects.begin(); obj != scene.objects.end(); ++obj)
 	{
 		float t = (*obj)->Intersect(ray);
-		if (t < min_t && t > zeroTolerance)
+		if (t < min_t && t > zeroTolerance )
 		{
+			
 			min_primitive = (Object*)(*obj);
 			min_t = t;
 		
 		}
+	
 	}
 
 	return Intersection(min_t, min_primitive);

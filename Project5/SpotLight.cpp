@@ -21,7 +21,7 @@ LightImpact SpotLight::lightImpact(Vector3f& point){
 	
 	float angel =  ImpactDir*(Direction);
 	
-	if(angel < this->Angel || angel<0  ){
+	if(angel < this->Angel){
 		return LightImpact(); // no hit
 		 
 	}

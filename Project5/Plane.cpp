@@ -2,24 +2,11 @@
 #include "Const.h"
 #include <math.h>
 #include "Object.h"
-#include "amp_math.h"
 
 
 using namespace std;
 
-<<<<<<< HEAD
-const float RECT_SIZE = 10;
-=======
-
 const float RECT_SIZE = 32;
->>>>>>> origin/master
-
-inline float fminf(float x,float y){
-	if(x<y)
-		return x;
-	else 
-		return y;
-}
 
 
 Plane::Plane(Vec& center, Vec& n, float width, float length, Material& material)
@@ -209,6 +196,32 @@ inline Vec Plane::Ks(Vec& pointOfImpact){
 		return Vec(fminf(1.25 * c.p[0], 1),
 					fminf(1.5 * c.p[1], 1),
 					fminf(1.75 * c.p[2], 1));
+	}
+	return  c;
+
+}
+
+
+
+inline Vec Plane::Kt(Vec& pointOfImpact){
+
+
+	Vec c = Object::Ks(pointOfImpact);
+
+	Vec L = Vector3f::projectOntoVector(pointOfImpact, this->baseL);
+	Vec W = Vector3f::projectOntoVector(pointOfImpact, this->baseW);
+
+	int l = ((int)L.getLength() / RECT_SIZE);
+	int w = ((int)W.getLength() / RECT_SIZE);
+	l %= 2;
+	w %= 2;
+
+
+	if (w*l){
+		c = Vec(1, 1, 1);
+		return Vec(fminf(1.25 * c.p[0], 1),
+			fminf(1.5 * c.p[1], 1),
+			fminf(1.75 * c.p[2], 1));
 	}
 	return  c;
 
