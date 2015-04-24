@@ -63,7 +63,7 @@ GLubyte* Camera::getPicture(Scene& scene, IntersectionEngine& intersectionFinder
 			index = y * viewPlane.width + x;
 			Vec p = pCenter + (x - xCenter)*Rx*right + (y - yCenter)*Ry*up;
 		//	printf("%s\n", p.toString().c_str());
-			castRay(position, p, index, pic, scene,2);
+			castRay(position, p, index, pic, scene, REC_LEVEL);
 
 
 		}
@@ -134,11 +134,11 @@ inline void putColor(GLubyte *pic, int index, Vec color){
 
 inline bool ocluded(Scene& scene, Vec& pointOfIntersection, Vec& DirectionOfLight, Object* currentObject){
 
-	Ray ray(pointOfIntersection, DirectionOfLight);
+	Ray ray(pointOfIntersection +DirectionOfLight  *zeroTolerance, DirectionOfLight);
 
 	Intersection intersection = scene.intersectionFinder->FindIntersection(ray, scene);
 
-	return (!intersection.object == NULL &&  intersection.object != currentObject);
+	return (!intersection.object == NULL);// &&  intersection.object != currentObject);
 
 }
 

@@ -41,7 +41,7 @@ void createScene(){
 	
 	 
 	float PlaneDist = 1; 
-	ambient = new AmbientLight(Vec(0.0, 0.0, 0.0));
+	ambient = new AmbientLight(Vec(0.0, 0.0, 0));
 	directional = new DirectionalLight(Vec(0, -1,-1), Vec(0., 0.5, 0.5));
 	directional2 = new DirectionalLight(Vec(1, 0, 0), Vec(0.8, 0.5, 0.2));
 	//directional2 = new DirectionalLight(Vec(-1, -1, 0), Vec50.1, 0.4, 0.2));
@@ -52,7 +52,7 @@ void createScene(){
 	scene =new Scene(intersectionFinder, ambient);
 	camera = Camera(CamPos, Up, Forward, ViewPlane(width, height, PlaneDist),1);
 	
-	Material material(Vec(0.5, 0.5, 0.5), Vec(0, 1, 1), Vec(1, 1, 1), 20),
+	Material material(Vec(0.5, 0.5, 0.5), Vec(0.5, 0.5, 0.5), Vec(1, 0.8, 1),Vec(1,1,1), 50),
 		material2(Vec(0.5, 0.5, 0), Vec(0, 0.7, 0.7), Vec(0.5, 0.8, 1), 1),
 		material3(Vec(0.1, 0.6, 0.3), Vec(0.4, 0.8, 0.4), Vec(0, 0.5, 0.5), Vec(1, 1, 1), 5),
 		material4(Vec(0.5, 0, 0.5), Vec(0, 0.8, 0.3), Vec(.7, 0.2, 0.8), 20),
@@ -65,7 +65,7 @@ void createScene(){
 	Sphere* sphere4 = new Sphere(Vec(1, 1, -9), 0.5, material6);
 	Plane* plane = new Plane(Vec(0, -1, -10), Vec(0, 1, 0), 100 ,100, material2);
 	Plane* plane2 = new Plane(Vec(5, 0, -11), Vec(-1, 0, 1), 5, 5, material3);
-	Plane* plane3 = new Plane(Vec(-5, 0, -15), Vec(1, 0,  1), 5, 10, material);
+	Plane* plane3 = new Plane(Vec(-5, 0, -15), Vec(1, 0,  1), 5, 10, material3);
 	
 	scene->objects.push_back(plane);
 	scene->objects.push_back(plane2);
@@ -74,7 +74,7 @@ void createScene(){
 	scene->objects.push_back(sphere2);
 	scene->objects.push_back(sphere3);
 	scene->objects.push_back(sphere4);
-//	scene->lightSources.push_back(directional);
+	scene->lightSources.push_back(directional);
 	scene->lightSources.push_back(directional2);
 	scene->lightSources.push_back(spot);
 
