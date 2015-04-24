@@ -113,36 +113,56 @@ inline bool ocluded(Scene& scene, Vec& pointOfIntersection, Vec& DirectionOfLigh
 
 }
 
-inline Vec calcColor(Scene& scene, Ray& ray, Intersection& intersection, int index)
+inline Vec calcColor(Scene& scene, Ray& ray, Intersection& intersection, Vec& cameraPos , int index)
 {
 	
 	Vec pointOfIntersection = ray.getPoint(intersection.t);
 	Object* obj = intersection.object;
+
 	Vec diffuse = Vec::zero();
+	Vec specular = Vec::zero();
 	
 	Vec kd = obj->Kd(pointOfIntersection);
+	Vec ks = obj->Ks(pointOfIntersection);
 	Vec norm = obj->normal(pointOfIntersection);
+	int specExp = obj->getSpecularExponent();
+
 
 	for (std::vector<LightSource *>::iterator it = scene.lightSources.begin(); it != scene.lightSources.end(); ++it){
 
 
-		LightImpact impact = (*it)->lightImpact(pointOfIntersection);
+		LightImpact impact = (LightImpact ) (*it)->lightImpact(pointOfIntersection);
 		
-		if (!impact.IsHit  )
+		if (!impact.IsHit )
 			continue;
-		if (ocluded(scene, pointOfIntersection, (*impact.Direction) ))
+		if (ocluded(scene, pointOfIntersection, (impact.Direction) ))
 			continue;
-		float dir = (*impact.Direction)*norm;
+
+		float dir = (impact.Direction)*norm;
 		if (dir > 0)
-			diffuse += dir * (*impact.Lcolor);
-		
+			diffuse += dir * (impact.Lcolor);
+
+		Vec R = ((impact.Direction) - 2 * ((impact.Direction) * norm) * norm);
+		Vec V = cameraPos - pointOfIntersection;
+		V.normalize();
+		float spec = pow ( (R * V) ,1);
+
+		if (spec > 0)
+			specular += spec * (impact.Lcolor);
+ 
 	}
-	Vec c = kd % diffuse;
-	 
+
+
 	//			ambient														
-	return ( (*obj).Ka(pointOfIntersection)% scene.ambientLight->Icolor 
-	//			diffuse 	
-			+ kd % diffuse ) % Vec( 255,255,255);
+	Vec color =((*obj).Ka(pointOfIntersection) % scene.ambientLight->Icolor
+		//			diffuse 	
+		+ kd % diffuse
+		//			Specular
+		+ks % specular
+		//				to RGB
+		) % Vec(255, 255, 255);
+	 														
+	return Vec(fminf(color.x, 255), fminf(color.y, 255), fminf(color.z, 255));
 
 }
 
@@ -162,7 +182,7 @@ inline void castRay(Vec& cameraPos, Vec& pointOnPlane, int index, GLubyte* pic, 
 	}
 	else {
 
-		color = calcColor(scene, ray,intersection , index);
+		color = calcColor(scene, ray,intersection , cameraPos, index);
 	}
 	 
 	putColor(pic, index, color);

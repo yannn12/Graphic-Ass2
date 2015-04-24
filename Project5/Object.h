@@ -17,6 +17,7 @@ protected:
 
 public:
 
+	
 	Material material;
 
 	//returns negative number  if there are  no intersactions or the ray is orthogonal
@@ -30,8 +31,12 @@ public:
 	//return the diffuse coefficient vector of the object in the point 
 	 virtual  Vec Kd(Vec& pointOfImpact);
 
-	////return the specular coefficient vector of the object in the point 
-	// virtual  Vec Ks(Vec& pointOfImpact);
+	//return the specular coefficient vector of the object in the point 
+	 virtual  Vec Ks(Vec& pointOfImpact);
+
+	 // return the specular Exponent
+	 virtual int getSpecularExponent();
+
 
 };
 

@@ -17,5 +17,5 @@ LightImpact DirectionalLight::lightImpact(Vector3f& point)
 {
 	 
 	
-	return LightImpact(&Icolor, &(Direction));
+	return LightImpact(Icolor, (Direction));
 }

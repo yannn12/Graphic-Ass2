@@ -3,26 +3,26 @@
 
 
 
-LightImpact::LightImpact(Vector3f* Lcolor,Vector3f* Direction)
+LightImpact::LightImpact(Vector3f& Lcolor,Vector3f& Direction)
 {
-	this->Lcolor = NULL;
-	this->Direction = NULL;
-	this->IsHit = false;
-	this->IsAmbient = false;
-
-	if(Lcolor!=NULL){
-		_Lcolor = *Lcolor;
-		this->Lcolor = &_Lcolor;
+	 
+		//_Lcolor = Lcolor;
+		this->Lcolor = Lcolor;
 		this->IsHit = true;
-	}
-	if(Direction!=NULL){
-		_Direction = *Direction;
-		this->Direction = &_Direction;
+	 
+		//_Direction = Direction;
+		this->Direction = Direction;
 		this->IsAmbient = true;
-	}
+	
 }
 
 
+LightImpact::LightImpact(void)
+{
+	this->IsHit = false;
+	this->Lcolor = Vector3f::zero();
+	this->Direction = Vector3f::zero();
+}
 
 LightImpact::~LightImpact(void)
 {

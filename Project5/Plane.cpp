@@ -174,3 +174,26 @@ inline Vec Plane::Kd(Vec& pointOfImpact){
 	return  c;
 
 }
+
+inline Vec Plane::Ks(Vec& pointOfImpact){
+
+
+	Vec c = Object::Ks(pointOfImpact);
+
+	Vec L = Vector3f::projectOntoVector(pointOfImpact, this->baseL);
+	Vec W = Vector3f::projectOntoVector(pointOfImpact, this->baseW);
+
+	int l = ((int)L.getLength() / RECT_SIZE);
+	int w = ((int)W.getLength() / RECT_SIZE);
+	l %= 2;
+	w %= 2;
+
+
+	if (w*l){
+		return Vec(fminf(1.25 * c.p[0], 1),
+			fminf(1.5 * c.p[1], 1),
+			fminf(1.25 * c.p[2], 1));
+	}
+	return  c;
+
+}
