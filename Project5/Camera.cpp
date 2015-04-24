@@ -6,6 +6,13 @@
 
 inline void castRay(Vec& cameraPos, Vec& pointOnPlane, int index, GLubyte* pic, Scene& scene);
 inline void putColor(GLubyte *pic, int index, Vec color);
+inline float fminf(float x,float y){
+	if(x<y)
+		return x;
+	else 
+		return y;
+}
+
 
 Camera::Camera(Vec& position, Vector3f& up, Vector3f& forward, ViewPlane& viewPlane, float pixelwidth) :
 up(up), forward(forward), right( forward ^up), position(position), viewPlane(viewPlane), pixelwidth(pixelwidth)

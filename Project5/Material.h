@@ -17,10 +17,10 @@ public:
 	
 	static const int Ka = 0, Kd = 1, Ks = 2;
 	Vector3f Coefficients[3];
-	int specularExponent;
+	float specularExponent;
 
 
-	Material(Vec& Ka, Vec& Kd, Vec& Ks,int specularExponent);
+	Material(Vec& Ka, Vec& Kd, Vec& Ks,float specularExponent);
 	Material();
 	~Material();
 };

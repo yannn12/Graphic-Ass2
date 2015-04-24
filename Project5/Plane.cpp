@@ -2,11 +2,20 @@
 #include "Const.h"
 #include <math.h>
 #include "Object.h"
+#include "amp_math.h"
 
 
 using namespace std;
 
+
 const float RECT_SIZE = 32;
+
+inline float fminf(float x,float y){
+	if(x<y)
+		return x;
+	else 
+		return y;
+}
 
 
 Plane::Plane(Vec& center, Vec& n, float width, float length, Material& material)

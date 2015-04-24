@@ -24,7 +24,7 @@ public:
 	~Scene();
 	
 	
-
+	Camera * camera;
 	std::vector <Object*> objects;
 	std::vector <LightSource*> lightSources;
 	
