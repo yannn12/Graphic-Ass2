@@ -159,7 +159,4 @@
       <Filter>Source Files\3Dobjects</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\scene.txt" />
-  </ItemGroup>
 </Project>

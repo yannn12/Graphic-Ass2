@@ -114,7 +114,7 @@ void ParseScene(char* Filename,Scene & scene)
 {
 	std::string line;
 	std::ifstream file;
-	file.open("C:\\Users\\Yaniv\\Desktop\\scene.txt",ios::in);
+	file.open(Filename,ios::in);
 		
 	if (!file.is_open()){
 		printf("error cannot open input file\n");
