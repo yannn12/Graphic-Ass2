@@ -13,7 +13,7 @@ public:
 	Vec center;
 	float radius;
 
-	Sphere(Vec center, float radius, Vec color);
+	Sphere(Vec center, float radius, Material& material);
 	Sphere(Sphere& s, Vec color);
 	~Sphere();
 

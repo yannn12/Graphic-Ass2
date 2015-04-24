@@ -7,8 +7,8 @@
 inline void castRay(Vec& cameraPos, Vec& pointOnPlane, int index, GLubyte* pic, Scene& scene);
 inline void putColor(GLubyte *pic, int index, Vec color);
 
-Camera::Camera(Vec& position, Vector3f& up, Vector3f& forward, ViewPlane& viewPlane, int dpi) :
-up(up), forward(forward), right(up ^ forward), position(position), viewPlane(viewPlane), dpi(dpi)
+Camera::Camera(Vec& position, Vector3f& up, Vector3f& forward, ViewPlane& viewPlane, float pixelwidth) :
+up(up), forward(forward), right( forward ^up), position(position), viewPlane(viewPlane), pixelwidth(pixelwidth)
 {
 	
 
@@ -18,8 +18,21 @@ up(up), forward(forward), right(up ^ forward), position(position), viewPlane(vie
 
 }
 
+Camera::Camera(Vec& position, Vector3f& up, int width, int height, Vec& centerOfViewPlane, float pixelwidth):
+	up(up), position(position), pixelwidth(pixelwidth)
+{
+	forward=(centerOfViewPlane - position);
+	right=(up ^ forward);
+	viewPlane = ViewPlane(width, height, forward.getLength());
+
+	this->up.normalize();
+	this->forward.normalize();
+	this->right.normalize();
+	
+}
+
 Camera::Camera() :
-up(Vec::zero()), forward(Vec::zero()), right(Vec::zero()), position(Vec::zero()), viewPlane(), dpi(0)
+up(Vec::zero()), forward(Vec::zero()), right(Vec::zero()), position(Vec::zero()), viewPlane(), pixelwidth(1)
 {}
 
 Camera::~Camera()
@@ -38,11 +51,26 @@ GLubyte* Camera::getPicture(Scene& scene, IntersectionEngine& intersectionFinder
 	// vector from the camera to the center of the viewing plane 
 	Vec pCenter = position + forward * viewPlane.dist; 
  
-	unsigned int count=0;
+	float w = this->pixelwidth;
+	float Rx = w / viewPlane.width;
+	float Ry = w / viewPlane.height;
 
-	for (int y = 0; y < yCenter; y++){
+	for (int y = 0; y <viewPlane.height-1; y++){
+		for (int x = 0; x < viewPlane.width-1; x++){
+
+			
+			index = y * viewPlane.width + x;
+			Vec p = pCenter + (x - xCenter)*Rx*right + (y - yCenter)*Ry*up;
+		//	printf("%s\n", p.toString().c_str());
+			castRay(position, p, index, pic, scene);
+
+
+		}
+
+	}
+	/*for (int y = 0; y < yCenter; y++){
 		for (int x = 0; x < xCenter; x++){
-				
+			
 			horizontal  = right * (xCenter - x);
 			vertical	=	up * (yCenter - y);
 			
@@ -66,7 +94,7 @@ GLubyte* Camera::getPicture(Scene& scene, IntersectionEngine& intersectionFinder
 			
 		}
 		
-	}
+	}*/
 	//printf("hit count: %d", count);
 	return pic;
 }

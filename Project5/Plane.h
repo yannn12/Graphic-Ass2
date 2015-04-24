@@ -2,7 +2,7 @@
 #include "Vector3f.h"
 #include "Ray.h"
 #include "Object.h"
-
+#include "Material.h"
 
 typedef Vector3f Vec;
 
@@ -19,7 +19,7 @@ public:
 
 
 	//recives a point and a normal assumes one normal coordiante is 0 and 1 edge of the plane is parallel to  one of the axis
-	Plane(Vec& Center, Vec& n ,Vec& color , float width, float length);   
+	Plane(Vec& Center, Vec& n , float width, float length, Material& material);   
 	//recives a 3 points in space where p0 is the distance of the plane to the origin 
 	~Plane();
 	virtual float Intersect(Ray& ray);

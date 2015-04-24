@@ -11,14 +11,13 @@ class Object
 {
 protected:
 	
-	Vector3f color;
-	
-
+ 	
+	Material material;
 
 public:
 
 	
-	Material material;
+	
 
 	//returns negative number  if there are  no intersactions or the ray is orthogonal
 	virtual float Intersect(Ray& ray) = 0;
@@ -33,11 +32,10 @@ public:
 
 	//return the specular coefficient vector of the object in the point 
 	 virtual  Vec Ks(Vec& pointOfImpact);
-
 	 // return the specular Exponent
 	 virtual int getSpecularExponent();
 
-
+	  
 };
 
 

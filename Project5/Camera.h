@@ -21,6 +21,7 @@ public:
 
 
 	ViewPlane(int width, int height, float dist);
+ 
 	ViewPlane();
 	ViewPlane(ViewPlane& p);
 	~ViewPlane();
@@ -35,10 +36,11 @@ public:
 	Vector3f up, forward, right;
 	Vector3f position;
 	ViewPlane viewPlane;
-	int dpi;
+	float pixelwidth;
 
 	Camera();
-	Camera(Vec& position, Vector3f& up, Vector3f& forward, ViewPlane& viewPlane, int dpi);
+	Camera(Vec& position, Vector3f& up, Vector3f& forward, ViewPlane& viewPlane, float pixelwidth);
+	Camera(Vec& position, Vector3f& up, int width, int height, Vec& centerOfViewPlane, float pixelwidth);
 	~Camera();
 
 	GLubyte* getPicture(Scene& scene, IntersectionEngine& intersectionFinder);

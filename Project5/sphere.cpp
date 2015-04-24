@@ -1,14 +1,14 @@
 #include "sphere.h"
 #include "Object.h"
 
-Sphere::Sphere(Vec center, float radius, Vec color) : center(center), radius(radius)
+Sphere::Sphere(Vec center, float radius, Material& material ) : center(center), radius(radius)
 {
-	this->color = color;
+	this->material = material;
 }
 
 Sphere::Sphere(Sphere& s, Vec color) : center(s.center), radius(s.radius)
 {
-	this->color = color;
+	  
 }
 
 Sphere::~Sphere()
@@ -20,20 +20,6 @@ float Sphere::Intersect(Ray& ray)
 	Vec po = (ray.p - center);
 	
 
-
-	// a = 1;
-	/*float b = 2 * (po *ray.v);
-	float c = po*po - radius*radius;
-
-	float diterminata = b*b - 4 * c;
-
-	if (diterminata < 0)
-		return -1;
-
-	diterminata = sqrt(diterminata);
-	float r1 = (-b - diterminata) / 2;
-	float r2 = (-b + diterminata) / 2;
-*/
 	float b = (ray.v*po);
 	float c = po*po - radius*radius;
 	float determinata = b*b - c;

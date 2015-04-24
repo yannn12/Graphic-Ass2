@@ -9,8 +9,8 @@ using namespace std;
 const float RECT_SIZE = 32;
 
 
-Plane::Plane(Vec& center, Vec& n, Vec& color, float width, float length) 
-				: center(center), n(n), width(width), length(length)
+Plane::Plane(Vec& center, Vec& n, float width, float length, Material& material)
+		: center(center), n(n), width(width), length(length)
 {
 	// if x is a point on the plane then (x-center).n=0  ===>  x.n + (-x.n)=0 --->  we bring it to the form p.n +d =0
 	//also we normalize the values so that the plane eqaution n.p+d=0 becomes n.p / |n|  + d /|n| =0
@@ -60,7 +60,7 @@ Plane::Plane(Vec& center, Vec& n, Vec& color, float width, float length)
 	baseL.normalize();
 	baseW.normalize();
 	
-	this->color = color;
+	this->material=(material);
 }
 
 
