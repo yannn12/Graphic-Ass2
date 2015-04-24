@@ -2,7 +2,7 @@
 
 
 
-Material::Material(Vec& Ka_, Vec& Kd_, Vec& Ks_, int specularExponent)
+Material::Material(Vec& Ka_, Vec& Kd_, Vec& Ks_, float specularExponent)
 {
 	Coefficients[Ka] = Ka_;
 	Coefficients[Kd] = Kd_;

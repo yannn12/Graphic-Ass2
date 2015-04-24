@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <math.h>
- 
+
+#include "SceneParser.h"
 #include "Display.h"
 #include "glut.h"
 #include "Camera.h"
@@ -27,9 +28,15 @@ int width = 512, height = 512;
 //const int width = 320, height = 240,dpi =1;
 //
 //float PlaneDist = 30.0f;
+void createSceneFromFile(){
+	scene = new Scene();
+	ParseScene("scene.txt",*scene);
+	scene->intersectionFinder = new  NaiveIntersection();
 
+ 
+}
 
-void createScene(){
+void createScene2(){
 
 	Vec CamPos(0, 0, 0), Up(0, 1, 0), Forward(0, 0, -1);
 	
@@ -48,7 +55,7 @@ void createScene(){
 
 	intersectionFinder = new  NaiveIntersection();
 	scene =new Scene(intersectionFinder, ambient);
-	camera = Camera(CamPos, Up, Forward, ViewPlane(width, height, PlaneDist),1);
+	scene->camera = new Camera(CamPos, Up, Forward, ViewPlane(width, height, PlaneDist),1);
 	
 	Material material(Vec(0.5, 0.5, 0.5), Vec(0, 1, 1), Vec(0, 1, 1), 1),
 		material2(Vec(0.5, 0.5, 0), Vec(0, 0.7, 0.7), Vec(0.5, 0.8, 1), 1);
@@ -74,8 +81,9 @@ int main(int  argc, char** argv)
 
 	
 	
-	createScene();
-	pic =camera.getPicture(*scene, *intersectionFinder);
+	createSceneFromFile();
+	
+	pic = scene->camera->getPicture(*scene, *intersectionFinder);
 
 	Display display(width, height, "RayTracing");
 	display.setPicture(pic);

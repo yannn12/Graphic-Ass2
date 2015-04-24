@@ -33,7 +33,7 @@ public:
 	//return the specular coefficient vector of the object in the point 
 	 virtual  Vec Ks(Vec& pointOfImpact);
 	 // return the specular Exponent
-	 virtual int getSpecularExponent();
+	 virtual float getSpecularExponent();
 
 	  
 };

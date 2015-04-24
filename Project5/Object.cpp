@@ -22,7 +22,7 @@ Vec Object::Ks(Vec& pointOfImpact){
 }
 
 // return the specular Exponent
-int Object::getSpecularExponent(){
+float Object::getSpecularExponent(){
 	
 	return material.specularExponent;
 }
