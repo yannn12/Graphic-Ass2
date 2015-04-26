@@ -31,7 +31,7 @@ int width = 512, height = 512;
 
 void createScene(){
 
-	Vec CamPos(0, 0, 0), Up(0, 1, 0), Forward(0, 0, -1);
+	Vec CamPos(0, 0, 3), Up(0, 1, 0), Forward(0, 0, -1);
 	
 	
 	AmbientLight* ambient;
@@ -40,7 +40,7 @@ void createScene(){
 	SpotLight* spot;
 	
 	 
-	float PlaneDist = 1; 
+	float PlaneDist = 2; 
 	ambient = new AmbientLight(Vec(0.0, 0.0, 0));
 	directional = new DirectionalLight(Vec(0, -1,-1), Vec(0., 0.5, 0.5));
 	directional2 = new DirectionalLight(Vec(1, 0, 0), Vec(0.8, 0.5, 0.2));
@@ -50,7 +50,7 @@ void createScene(){
 
 	intersectionFinder = new  NaiveIntersection();
 	scene =new Scene(intersectionFinder, ambient);
-	camera = Camera(CamPos, Up, Forward, ViewPlane(width, height, PlaneDist),1);
+	camera = Camera(CamPos, Up, Forward, ViewPlane(width, height, PlaneDist),2);
 	
 	Material material(Vec(0.5, 0.5, 0.5), Vec(0.5, 0.5, 0.5), Vec(1, 0.8, 1),Vec(1,1,1), 50),
 		material2(Vec(0.5, 0.5, 0), Vec(0, 0.7, 0.7), Vec(0.5, 0.8, 1), 1),
@@ -66,7 +66,8 @@ void createScene(){
 	Plane* plane = new Plane(Vec(0, -1, -10), Vec(0, 1, 0), 100 ,100, material2);
 	Plane* plane2 = new Plane(Vec(5, 0, -11), Vec(-1, 0, 1), 5, 5, material3);
 	Plane* plane3 = new Plane(Vec(-5, 0, -15), Vec(1, 0,  1), 5, 10, material3);
-	
+
+
 	scene->objects.push_back(plane);
 	scene->objects.push_back(plane2);
 	scene->objects.push_back(plane3);

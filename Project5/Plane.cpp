@@ -6,7 +6,7 @@
 
 using namespace std;
 
-const float RECT_SIZE = 32;
+const float RECT_SIZE = 10;
 
 
 Plane::Plane(Vec& center, Vec& n, float width, float length, Material& material)
@@ -43,11 +43,11 @@ Plane::Plane(Vec& center, Vec& n, float width, float length, Material& material)
 		}
 	}
 	
-	v1.p[zeroIndex] += length;
+	v1.p[zeroIndex] += length/2;
 	//v2 should be orthogonal to v1 and n , with the size of the width ;
 	v2 =  (v1 ^n);  
 	v2.normalize(); 
-	v2 =  v2* width;
+	v2 =  v2* width/2;
 	
 	p1 = center + v1 + v2;   
 	p2 = center + v1 - v2;
