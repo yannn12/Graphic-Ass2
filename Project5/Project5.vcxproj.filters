@@ -102,9 +102,6 @@
     <ClInclude Include="Plane.h">
       <Filter>Header Files\3DObject</Filter>
     </ClInclude>
-    <ClInclude Include="lens.h">
-      <Filter>Header Files\Camera</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -160,9 +157,6 @@
     </ClCompile>
     <ClCompile Include="Material.cpp">
       <Filter>Source Files\3Dobjects</Filter>
-    </ClCompile>
-    <ClCompile Include="lens.cpp">
-      <Filter>Source Files\Camera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

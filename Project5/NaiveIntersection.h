@@ -9,7 +9,7 @@ class NaiveIntersection :
  
 public:
 	
-	Intersection FindIntersection(Ray& ray, Scene& scene);
+	Intersection FindIntersection(Ray& ray, Scene& scene, Object* currentObj);
 	NaiveIntersection();
 	~NaiveIntersection();
 

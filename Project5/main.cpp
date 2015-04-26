@@ -14,6 +14,8 @@
 #include "Intersection.h"
 #include "DirectionalLight.h"
 
+#include <time.h>
+
 using namespace std;
 
 
@@ -40,7 +42,7 @@ void createScene(){
 	SpotLight* spot;
 	
 	 
-	float PlaneDist = 2; 
+	float PlaneDist = 3; 
 	ambient = new AmbientLight(Vec(0.0, 0.0, 0));
 	directional = new DirectionalLight(Vec(0, -1,-1), Vec(0., 0.5, 0.5));
 	directional2 = new DirectionalLight(Vec(1, 0, 0), Vec(0.8, 0.5, 0.2));
@@ -63,7 +65,7 @@ void createScene(){
 	Sphere* sphere2 = new Sphere(Vec(0, 2, -11), 0.5, material4);
 	Sphere* sphere3 = new Sphere(Vec(-1, 2, -9), 0.5, material5);
 	Sphere* sphere4 = new Sphere(Vec(1, 1, -9), 0.5, material6);
-	Plane* plane = new Plane(Vec(0, -1, -10), Vec(0, 1, 0), 100 ,100, material2);
+	Plane* plane = new Plane(Vec(0, -1, -10), Vec(0, 1, 0), 200 ,200, material2);
 	Plane* plane2 = new Plane(Vec(5, 0, -11), Vec(-1, 0, 1), 5, 5, material3);
 	Plane* plane3 = new Plane(Vec(-5, 0, -15), Vec(1, 0,  1), 5, 10, material3);
 
@@ -85,24 +87,48 @@ void createScene(){
 
 int main(int  argc, char** argv)
 {
-	
+
 	GLubyte *pic;
-	
 
 	
-	
+
+
 	createScene();
+	time_t start;
+	time_t end;
+
+	time(&start);
 	pic =camera.getPicture(*scene, *intersectionFinder);
+	time(&end);
+
+	double diff = difftime(end, start);
+	printf("Rendering time in seconds: %lf\n", diff);
 
 	Display display(width, height, "RayTracing");
 	display.setPicture(pic);
 	display.show();
- 
+
+
 	delete intersectionFinder;
 	delete pic;
 	delete scene;
 	return 0;
+
+
+	Vec a(-1, -1, 0);
+	Vec n(0, 1, 0);
+	a.normalize();
+	n.normalize();
+	Vec r = (a - 2 * ((a) * n) * n);
+	float c = 0;
+	while (c < M_PI / 2){
+		Vec r = (a*c - 2 * ( (a*c) * n) * n);
+		r.normalize();
+		c += 0.1;
+		if (n*r<=0){
+			c += 0;
+		}
+	}
 	
-	 
 	return 0;
 }

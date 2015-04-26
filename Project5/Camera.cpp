@@ -6,7 +6,12 @@
 
 inline void castRay(Vec& cameraPos, Vec& pointOnPlane, int index, GLubyte* pic, Scene& scene, int recursive);
 inline void putColor(GLubyte *pic, int index, Vec color);
-inline Vec calcRecursiveColor(Scene& scene, Ray& ray, Vec& cameraPos, int recursive);
+inline Vec calcRecursiveColor(Scene& scene, Ray& ray, Vec& cameraPos, int recursive ,Object * currentObj);
+ 
+
+
+
+Vec tmp;
 
 Camera::Camera(Vec& position, Vector3f& up, Vector3f& forward, ViewPlane& viewPlane, float pixelwidth) :
 up(up), forward(forward), right( forward ^up), position(position), viewPlane(viewPlane), pixelwidth(pixelwidth)
@@ -136,7 +141,7 @@ inline bool ocluded(Scene& scene, Vec& pointOfIntersection, Vec& DirectionOfLigh
 
 	Ray ray(pointOfIntersection +DirectionOfLight  *zeroTolerance, DirectionOfLight);
 
-	Intersection intersection = scene.intersectionFinder->FindIntersection(ray, scene);
+	Intersection intersection = scene.intersectionFinder->FindIntersection(ray, scene, currentObject);
 
 	return (!intersection.object == NULL);// &&  intersection.object != currentObject);
 
@@ -159,7 +164,7 @@ inline Vec calcColor(Scene& scene, Ray& ray, Intersection& intersection, Vec& ca
 	Vec norm = obj->normal(pointOfIntersection);
 	int specExp = obj->getSpecularExponent();
 
-
+	Vec R = Vec(0, 0, 0), V(0, 0, 0);
 	for (std::vector<LightSource *>::iterator it = scene.lightSources.begin(); it != scene.lightSources.end(); ++it){
 
 
@@ -176,8 +181,9 @@ inline Vec calcColor(Scene& scene, Ray& ray, Intersection& intersection, Vec& ca
 			diffuse+=(dir * (impact.Lcolor));
 			
 		
-		Vec R = ((impact.Direction) - 2 * ((impact.Direction) * norm) * norm);
-		Vec V = cameraPos - pointOfIntersection;
+		R = ((impact.Direction) - 2 * ((impact.Direction) * norm) * norm);
+		V = cameraPos - pointOfIntersection;
+		R.normalize();
 		V.normalize();
 
 		float spec =(R * V);
@@ -189,9 +195,10 @@ inline Vec calcColor(Scene& scene, Ray& ray, Intersection& intersection, Vec& ca
 	
  
 	}
-	Vec rec;
+	Vec rec(0,0,0);
+	/*Ray(pointOfIntersection + norm * 2 * zeroTolerance, norm)*/
 	if (!kt.isZero() )
-		rec = calcRecursiveColor(scene, Ray(pointOfIntersection + norm * 2 * zeroTolerance, norm), cameraPos, recursive - 1);
+		rec = calcRecursiveColor(scene, Ray(pointOfIntersection + R  * zeroTolerance, R), cameraPos, recursive - 1,obj);
 	//			ambient														
 	Vec color = ((*obj).Ka(pointOfIntersection) % scene.ambientLight->Icolor
 		//	diffuse 	
@@ -207,16 +214,17 @@ inline Vec calcColor(Scene& scene, Ray& ray, Intersection& intersection, Vec& ca
 
 }
 
-inline Vec calcRecursiveColor(Scene& scene, Ray& ray, Vec& cameraPos, int recursive)
+inline Vec calcRecursiveColor(Scene& scene, Ray& ray, Vec& cameraPos, int recursive,Object * currentObj)
 {
 	if (recursive == 0){
 		return BACKGROUND_COLOR;
 	}
-	Intersection intersection = scene.intersectionFinder->FindIntersection(ray, scene);
+	Intersection intersection = scene.intersectionFinder->FindIntersection(ray, scene, currentObj);
 	if (intersection.object == 0){
 		return BACKGROUND_COLOR;
 	}
 	Vec pointOfIntersection = ray.getPoint(intersection.t);
+	Vec v = ray.v * intersection.t;
 	Object* obj = intersection.object;
 
 	Vec diffuse = Vec::zero();
@@ -227,12 +235,13 @@ inline Vec calcRecursiveColor(Scene& scene, Ray& ray, Vec& cameraPos, int recurs
 	Vec kt = obj->Kt(pointOfIntersection);
 	Vec norm = obj->normal(pointOfIntersection);
 	int specExp = obj->getSpecularExponent();
-
+	LightImpact impact;
+	Vec R=Vec(0,0,0), V(0,0,0);
 
 	for (std::vector<LightSource *>::iterator it = scene.lightSources.begin(); it != scene.lightSources.end(); ++it){
 
 
-		LightImpact impact = (LightImpact)(*it)->lightImpact(pointOfIntersection);
+		impact = (LightImpact)(*it)->lightImpact(pointOfIntersection);
 
 		if (!impact.IsHit)
 			continue;
@@ -245,9 +254,10 @@ inline Vec calcRecursiveColor(Scene& scene, Ray& ray, Vec& cameraPos, int recurs
 			diffuse += (dir * (impact.Lcolor));
 
 
-		Vec R = ((impact.Direction) - 2 * ((impact.Direction) * norm) * norm);
-		Vec V = cameraPos - pointOfIntersection;
+		R = (impact.Direction - 2 * (impact.Direction * norm) * norm);
+		V = cameraPos - pointOfIntersection;
 		V.normalize();
+		R.normalize();
 
 		float spec = (R * V);
 		spec = pow(spec, specExp);
@@ -256,11 +266,13 @@ inline Vec calcRecursiveColor(Scene& scene, Ray& ray, Vec& cameraPos, int recurs
 			specular += (spec * (impact.Lcolor));
 		}
 
-
+	/*	float t = acos(R*impact.Direction);
+		t = 0;*/
 	}
 	Vec rec = Vec::zero();
-	if (!kt.isZero())
-		rec = calcRecursiveColor(scene, Ray(pointOfIntersection + norm * 2 * zeroTolerance, norm), cameraPos, recursive - 1);
+	tmp = pointOfIntersection;
+	if (!kt.isZero() )
+		rec = calcRecursiveColor(scene, Ray(pointOfIntersection + R  * zeroTolerance, R), cameraPos, recursive - 1,obj);
 	//			ambient														
 	Vec color = ((*obj).Ka(pointOfIntersection) % scene.ambientLight->Icolor
 		//	diffuse 	
@@ -284,7 +296,7 @@ inline void castRay(Vec& cameraPos, Vec& pointOnPlane, int index, GLubyte* pic, 
 	Ray ray(cameraPos, vector);
 	 
 	Vec color;
-	Intersection intersection= (*scene.intersectionFinder).FindIntersection(ray, scene);
+	Intersection intersection= (*scene.intersectionFinder).FindIntersection(ray, scene, 0);
 	if (intersection.object == NULL)
 	{
 		color= BACKGROUND_COLOR;
@@ -297,6 +309,7 @@ inline void castRay(Vec& cameraPos, Vec& pointOnPlane, int index, GLubyte* pic, 
 	putColor(pic, index, color);
 
 }
+
 
 
 

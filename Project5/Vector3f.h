@@ -26,6 +26,7 @@
 // licensing are not clear to you.
 //
 
+
 #ifndef __Vector3f_H_
 #define __Vector3f_H_
 
@@ -35,6 +36,9 @@
 
 #include <math.h>
 #include <string>
+
+const float zeroToleranceVec = 0.01f;
+ 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -535,7 +539,9 @@ public:
 
 
 	inline int isZero(){
-		return  p[0] == 0 && p[1] == 0 && p[2] == 0;
+		return  p[0] <zeroToleranceVec && p[0] >-zeroToleranceVec &&
+				p[1] <zeroToleranceVec && p[1] >-zeroToleranceVec &&
+				p[2] <zeroToleranceVec && p[2] >-zeroToleranceVec;
 	}
 
 	 std::string toString(){

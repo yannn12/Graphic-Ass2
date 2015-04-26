@@ -23,6 +23,6 @@ public:
 class IntersectionEngine{
 
 public :
-	virtual Intersection FindIntersection(Ray& ray, Scene& scene) = 0;
+	virtual Intersection FindIntersection(Ray& ray, Scene& scene, Object* currentObj) = 0;
 };
 
