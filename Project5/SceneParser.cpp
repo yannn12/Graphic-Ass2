@@ -41,7 +41,7 @@ std::vector<std::string> split(const std::string &s, char delim) {
 }
 
 
-bool ParseScene(vector<string> params,Scene& scene){
+bool ParseScene(vector<string> params,vector<string> extraParams,Scene& scene){
 	if(params.size()<12)
 		return false;
 
@@ -62,7 +62,7 @@ bool ParseScene(vector<string> params,Scene& scene){
 
 }
 
-bool ParseSpher(vector<string> params,Scene& scene){
+bool ParseSpher(vector<string> params,vector<string> extraParams,Scene& scene){
 	if(params.size()<14){
 		return false;
 	}
@@ -72,12 +72,20 @@ bool ParseSpher(vector<string> params,Scene& scene){
 	Vector3f MetParamKd(stof(params[7]),stof(params[8]),stof(params[9]));
 	Vector3f MetParamKs(stof(params[10]),stof(params[11]),stof(params[12]));
 	float SpherShininess = stof(params[13]);
-	Material mat(MetParamKa,MetParamKd,MetParamKs,SpherShininess);
+	
+	Vector3f Reflection(0,0,0);
+	if(extraParams.size()>0&&extraParams[0].compare("M") ==0){
+		Vector3f ReflectionT(1,1,1);
+		Reflection = ReflectionT;
+	}
+
+	Material mat(MetParamKa,MetParamKd,MetParamKs,Reflection,SpherShininess);
+
 	scene.objects.push_back(new Sphere(SpherPosition,radios,mat));
 	
 }
 
-bool ParseLight(vector<string> params,Scene& scene){
+bool ParseLight(vector<string> params,vector<string> extraParams,Scene& scene){
 	if(params.size()<6)
 		return false;
 	Vector3f LightDirection(stof(params[0]),stof(params[1]),stof(params[2]));
@@ -93,7 +101,7 @@ bool ParseLight(vector<string> params,Scene& scene){
 	}
 }
 
-bool ParsePlane(vector<string> params,Scene& scene){
+bool ParsePlane(vector<string> params,vector<string> extraParams,Scene& scene){
 	if(params.size()<18){
 		return false;
 	}
@@ -106,7 +114,13 @@ bool ParsePlane(vector<string> params,Scene& scene){
 	Vector3f MetParamKs(stof(params[14]),stof(params[15]),stof(params[16]));
 	float PlaneShininess = stof(params[17]);
 	
-	Material mat(MetParamKa,MetParamKd,MetParamKs,PlaneShininess);
+	Vector3f Reflection(0,0,0);
+	if(extraParams.size()>0&&extraParams[0].compare("M") ==0){
+		Vector3f ReflectionT(1,1,1);
+		Reflection = ReflectionT;
+	}
+
+	Material mat(MetParamKa,MetParamKd,MetParamKs,Reflection,PlaneShininess);
 	scene.objects.push_back(new Plane(PlanePosition,PlaneNormal,width,length,mat));
 }
 
@@ -126,20 +140,23 @@ void ParseScene(char* Filename,Scene & scene)
 	{
 		vector<string> vec;
 		vector<string> params;
+		vector<string> extraParams;
 		split(line,' ',vec,true);
 		if(vec.size()<2)
 			continue;
 
 		split(vec[1],',',params,true);
+		for(int i=2;i<vec.size();i++)
+			extraParams.push_back(vec[i]);
 
 		if(vec[0].compare("scene")==0)
-			ParseScene(params,scene);
+			ParseScene(params,extraParams,scene);
 		else if(vec[0].compare("light")==0)
-			ParseLight(params,scene);
+			ParseLight(params,extraParams,scene);
 		else if(vec[0].compare("spher")==0) // need impl Reflection
-			ParseSpher(params,scene);
+			ParseSpher(params,extraParams,scene);
 		else if(vec[0].compare("plane")==0) // need impl Reflection
-			ParsePlane(params,scene);
+			ParsePlane(params,extraParams,scene);
 		else
 			printf("Unknown Line Type");
 
