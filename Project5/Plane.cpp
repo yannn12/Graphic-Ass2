@@ -2,6 +2,7 @@
 #include "Const.h"
 #include <math.h>
 #include "Object.h"
+#include "utils.h"
 
 
 using namespace std;
@@ -143,9 +144,9 @@ inline Vec Plane::Ka(Vec& pointOfImpact){
 
 	 if (w*l){
 		 c = Vec(1, 1, 1);
-		 return Vec( fminf(1.25 * c.p[0], 1),
-					 fminf(1.5 * c.p[1], 1),
-					 fminf(1.75 * c.p[2], 1));
+		 return Vec( fminfloat(1.25 * c.p[0], 1),
+					 fminfloat(1.5 * c.p[1], 1),
+					 fminfloat(1.75 * c.p[2], 1));
 		 
 	 }
 	 return  c;
@@ -169,9 +170,9 @@ inline Vec Plane::Kd(Vec& pointOfImpact){
 
 	if (w*l){
 		c = Vec(1, 1, 1);
-		return Vec(fminf(1.25 * c.p[0], 1),
-					fminf(1.5 * c.p[1], 1),
-					fminf(1.75 * c.p[2], 1));
+		return Vec(fminfloat(1.25 * c.p[0], 1),
+					fminfloat(1.5 * c.p[1], 1),
+					fminfloat(1.75 * c.p[2], 1));
 	}
 	return  c;
 
@@ -193,9 +194,9 @@ inline Vec Plane::Ks(Vec& pointOfImpact){
 
 	if (w*l){
 		c = Vec(1, 1, 1);
-		return Vec(fminf(1.25 * c.p[0], 1),
-					fminf(1.5 * c.p[1], 1),
-					fminf(1.75 * c.p[2], 1));
+		return Vec(fminfloat(1.25 * c.p[0], 1),
+					fminfloat(1.5 * c.p[1], 1),
+					fminfloat(1.75 * c.p[2], 1));
 	}
 	return  c;
 
@@ -219,9 +220,9 @@ inline Vec Plane::Kt(Vec& pointOfImpact){
 
 	if (w*l){
 		c = Vec(1, 1, 1);
-		return Vec(fminf(1.25 * c.p[0], 1),
-			fminf(1.5 * c.p[1], 1),
-			fminf(1.75 * c.p[2], 1));
+		return Vec(fminfloat(1.25 * c.p[0], 1),
+			fminfloat(1.5 * c.p[1], 1),
+			fminfloat(1.75 * c.p[2], 1));
 	}
 	return  c;
 

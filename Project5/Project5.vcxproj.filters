@@ -102,6 +102,9 @@
     <ClInclude Include="Plane.h">
       <Filter>Header Files\3DObject</Filter>
     </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -157,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="Material.cpp">
       <Filter>Source Files\3Dobjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

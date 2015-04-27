@@ -34,6 +34,7 @@
 #pragma warning (disable:4244) //disable warning about conversion from double to float
 #pragma warning (disable:4305) // disable warning about truncation from double to float
 
+#include "utils.h"
 #include <math.h>
 #include <string>
 
@@ -413,9 +414,9 @@ public:
 	{
 		
 
-		x = fminf(x , maxVlaue);
-		y = fminf(y , maxVlaue);
-		z = fminf(z , maxVlaue);
+		x = fminfloat(x , maxVlaue);
+		y = fminfloat(y , maxVlaue);
+		z = fminfloat(z , maxVlaue);
 		
 	};
 
