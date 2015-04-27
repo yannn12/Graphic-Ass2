@@ -33,5 +33,6 @@ Scene::~Scene()
 
 	delete ambientLight;
 	delete intersectionFinder;
+	delete camera;
 
 }

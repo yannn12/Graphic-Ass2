@@ -27,6 +27,7 @@ public:
 
 	std::vector <Object*> objects;
 	std::vector <LightSource*> lightSources;
+	Camera * camera;
 	
 	AmbientLight* ambientLight;
 	

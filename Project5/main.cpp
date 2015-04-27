@@ -4,6 +4,7 @@
 #include <iostream>
 #include <math.h>
  
+#include "SceneParser.h"
 #include "Display.h"
 #include "glut.h"
 #include "Camera.h"
@@ -22,13 +23,20 @@ using namespace std;
 
 IntersectionEngine *intersectionFinder;
 Scene* scene;
-Camera camera;
 int width = 512, height = 512;
 //Vec CamPos(0, 0, 0), Up(0, 1, 0), Forward(0, 0, 1);
 //
 //const int width = 320, height = 240,dpi =1;
 //
 //float PlaneDist = 30.0f;
+
+void createSceneFromFile(){
+	scene = new Scene();
+	ParseScene("scene.txt",*scene);
+	scene->intersectionFinder = new  NaiveIntersection();
+
+ 
+}
 
 
 void createScene(){
@@ -52,7 +60,7 @@ void createScene(){
 
 	intersectionFinder = new  NaiveIntersection();
 	scene =new Scene(intersectionFinder, ambient);
-	camera = Camera(CamPos, Up, Forward, ViewPlane(width, height, PlaneDist),2);
+	scene->camera = new Camera(CamPos, Up, Forward, ViewPlane(width, height, PlaneDist),2);
 	
 	Material material(Vec(0.5, 0.5, 0.5), Vec(0.5, 0.5, 0.5), Vec(1, 0.8, 1),Vec(1,1,1), 50),
 		material2(Vec(0.5, 0.5, 0), Vec(0, 0.7, 0.7), Vec(0.5, 0.8, 1), 1),
@@ -93,12 +101,12 @@ int main(int  argc, char** argv)
 	
 
 
-	createScene();
+	createSceneFromFile();
 	time_t start;
 	time_t end;
 
 	time(&start);
-	pic =camera.getPicture(*scene, *intersectionFinder);
+	pic = scene->camera->getPicture(*scene, *intersectionFinder);
 	time(&end);
 
 	double diff = difftime(end, start);
