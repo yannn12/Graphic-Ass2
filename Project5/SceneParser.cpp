@@ -94,7 +94,8 @@ bool ParseLight(vector<string> params,vector<string> extraParams,Scene& scene){
 	{
 		Vector3f LightPosition(stof(params[6]),stof(params[7]),stof(params[8]));
 		float LightAngel = stof(params[9]);
-		scene.lightSources.push_back(new SpotLight(LightPosition,LightDirection,LightIntensity,LightAngel));
+		float LightAngelRad = LightAngel* M_PI/ 180.0f ;
+		scene.lightSources.push_back(new SpotLight(LightPosition,LightDirection,LightIntensity,LightAngelRad));
 	}
 	else{  // Directional Light
 		scene.lightSources.push_back(new DirectionalLight(LightDirection,LightIntensity));
@@ -129,7 +130,7 @@ void ParseScene(char* Filename,Scene & scene)
 {
 	std::string line;
 	std::ifstream file;
-	file.open("C:\\Users\\Yaniv\\Desktop\\scene.txt",ios::in);
+	file.open(Filename,ios::in);
 		
 	if (!file.is_open()){
 		printf("error cannot open input file\n");

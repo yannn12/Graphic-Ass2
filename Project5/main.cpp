@@ -41,7 +41,7 @@ void createSceneFromFile(){
 
 void createScene(){
 
-	Vec CamPos(0, 0, 3), Up(0, 1, 0), Forward(0, 0, -1);
+	Vec CamPos(0, 0, 0), Up(0, 1, 0), Forward(0, 0, -1);
 	
 	
 	AmbientLight* ambient;
@@ -56,7 +56,7 @@ void createScene(){
 	directional2 = new DirectionalLight(Vec(1, 0, 0), Vec(0.8, 0.5, 0.2));
 	//directional2 = new DirectionalLight(Vec(-1, -1, 0), Vec50.1, 0.4, 0.2));
 	float f = 20.0f / 180.0f * M_PI;
-	spot = new SpotLight(Vec(0, 10, -10 ), Vec(0, -1, 0), Vec(0.5, 0.5, 0.5), f);
+	spot = new SpotLight(Vec(0, 10, -13 ), Vec(0, -1, 0), Vec(0.5, 0.5, 0.5), f);
 
 	intersectionFinder = new  NaiveIntersection();
 	scene =new Scene(intersectionFinder, ambient);
@@ -69,13 +69,13 @@ void createScene(){
 		material5(Vec(0.5, 1, 0.5), Vec(0, 0.8, 0.3), Vec(.7, 0.2, 0.8), 20),
 		material6(Vec(0.2, 0.3, 0.8), Vec(1, 0.8, 0.3), Vec(.7, 0.2, 0.8), 20);
 	
-	Sphere* sphere = new Sphere(Vec(0, 1 , -10), 1, material);
-	Sphere* sphere2 = new Sphere(Vec(0, 2, -11), 0.5, material4);
-	Sphere* sphere3 = new Sphere(Vec(-1, 2, -9), 0.5, material5);
-	Sphere* sphere4 = new Sphere(Vec(1, 1, -9), 0.5, material6);
-	Plane* plane = new Plane(Vec(0, -1, -10), Vec(0, 1, 0), 200 ,200, material2);
-	Plane* plane2 = new Plane(Vec(5, 0, -11), Vec(-1, 0, 1), 5, 5, material3);
-	Plane* plane3 = new Plane(Vec(-5, 0, -15), Vec(1, 0,  1), 5, 10, material3);
+	Sphere* sphere = new Sphere(Vec(0, 1 , -13), 1, material);
+	Sphere* sphere2 = new Sphere(Vec(0, 2, -14), 0.5, material4);
+	Sphere* sphere3 = new Sphere(Vec(-1, 2, -12), 0.5, material5);
+	Sphere* sphere4 = new Sphere(Vec(1, 1, -12), 0.5, material6);
+	Plane* plane = new Plane(Vec(0, -1, -13), Vec(0, 1, 0), 200 ,200, material2);
+	Plane* plane2 = new Plane(Vec(5, 0, -14), Vec(-1, 0, 1), 5, 5, material3);
+	Plane* plane3 = new Plane(Vec(-5, 0, -19), Vec(1, 0,  1), 5, 10, material3);
 
 
 	scene->objects.push_back(plane);

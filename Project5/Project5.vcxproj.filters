@@ -165,4 +165,8 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="OurScene.txt" />
+    <Text Include="scene.txt" />
+  </ItemGroup>
 </Project>
